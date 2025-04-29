@@ -1,35 +1,40 @@
-<h1>Please Sign Up</h1>
-<form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
-  <div>
-    <input
-      type="text"
-      placeholder="enter username"
-      formControlName="username"
-    />
-  </div>
-  <br />
-  <div>
-    <input
-      [type]="showPassword ? 'text' : 'password'"
-      placeholder="enter password"
-      formControlName="password"
-    />
-    <button type="button" (click)="showPassword = !showPassword">
-      {{ showPassword ? "Hide" : "Show" }}
-    </button>
-  </div>
-  <br />
-  <div>
-    <input
-      [type]="showConfirmPassword ? 'text' : 'password'"
-      placeholder="confirm password"
-      formControlName="confirmPassword"
-    />
-    <button type="button" (click)="showConfirmPassword = !showConfirmPassword">
-      {{ showConfirmPassword ? "Hide" : "Show" }}
-    </button>
-  </div>
-  <br />
-  <button type="submit" [disabled]="signupForm.invalid">Submit</button>
-</form>
-<p>Already have an account? <a routerLink="/login">Login here</a></p>
+<div class="signup-container">
+  <h1>Please Sign Up</h1>
+  <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+    <div>
+      <input
+        type="text"
+        placeholder="enter username"
+        formControlName="username"
+      />
+    </div>
+    <br />
+    <div>
+      <input
+        [type]="showPassword ? 'text' : 'password'"
+        placeholder="enter password"
+        formControlName="password"
+      />
+      <button type="button" (click)="showPassword = !showPassword">
+        {{ showPassword ? "Hide" : "Show" }}
+      </button>
+    </div>
+    <br />
+    <div>
+      <input
+        [type]="showConfirmPassword ? 'text' : 'password'"
+        placeholder="confirm password"
+        formControlName="confirmPassword"
+      />
+      <button
+        type="button"
+        (click)="showConfirmPassword = !showConfirmPassword"
+      >
+        {{ showConfirmPassword ? "Hide" : "Show" }}
+      </button>
+    </div>
+    <br />
+    <button type="submit" [disabled]="signupForm.invalid">Submit</button>
+  </form>
+  <p>Already have an account? <a routerLink="/login">Login here</a></p>
+</div>

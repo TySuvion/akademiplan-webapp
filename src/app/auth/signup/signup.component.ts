@@ -12,6 +12,7 @@ import { RouterLink, RouterOutlet } from '@angular/router';
   selector: 'app-signup',
   templateUrl: './signup.component.html',
   imports: [ReactiveFormsModule, RouterLink],
+  styleUrls: ['./signup.component.css'],
 })
 export class SignupComponent {
   signupForm: FormGroup;

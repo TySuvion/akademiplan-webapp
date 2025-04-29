@@ -1,1 +1,26 @@
-<p>login works!</p>
+<div class="login-container">
+  <h1>Please Login</h1>
+  <form class="login-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <div>
+      <input
+        type="text"
+        placeholder="enter username"
+        formControlName="username"
+      />
+    </div>
+    <br />
+    <div>
+      <input
+        [type]="showPassword ? 'text' : 'password'"
+        placeholder="enter password"
+        formControlName="password"
+      />
+      <button type="button" (click)="showPassword = !showPassword">
+        {{ showPassword ? "Hide" : "Show" }}
+      </button>
+    </div>
+    <br />
+    <button type="submit" [disabled]="loginForm.invalid">Submit</button>
+  </form>
+  <p>Don't have an account? <a routerLink="/signup">Sign up here</a></p>
+</div>
