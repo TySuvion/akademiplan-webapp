@@ -6,11 +6,12 @@ import {
   FormControl,
   ReactiveFormsModule,
 } from '@angular/forms';
+import { RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterLink],
 })
 export class SignupComponent {
   signupForm: FormGroup;
