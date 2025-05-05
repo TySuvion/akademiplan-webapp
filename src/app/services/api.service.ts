@@ -9,16 +9,19 @@ export class ApiService {
   private baseUrl = 'http://localhost:3000';
   constructor(private http: HttpClient) {}
 
-  signUp(username: string, password: string) {
-    return this.http
-      .post(
-        `${this.baseUrl}/users}`,
-        { username: username, password: password },
-        { observe: 'response' }
-      )
-      .subscribe((response) => {
-        console.log('Response Status: ', response.status);
-        console.log('Response Body: ', response.body);
-      });
+  signUp(username: string, password: string): Observable<any> {
+    return this.http.post(
+      `${this.baseUrl}/users`,
+      { username: username, password: password },
+      { observe: 'response' }
+    );
+  }
+
+  login(username: string, password: string): Observable<any> {
+    return this.http.post(
+      `${this.baseUrl}/auth/login`,
+      { username: username, password: password },
+      { observe: 'response' }
+    );
   }
 }

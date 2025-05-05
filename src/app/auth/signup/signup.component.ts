@@ -25,6 +25,7 @@ export class SignupComponent {
     private formBuilder: FormBuilder,
     private apiService: ApiService
   ) {
+    console.log('ApiService: ', this.apiService);
     this.signupForm = this.formBuilder.group({
       username: [
         '',
@@ -48,8 +49,14 @@ export class SignupComponent {
   onSubmit() {
     if (this.signupForm.valid) {
       const { username, password } = this.signupForm.value;
-      console.log(`SignUp with: ${username} and ${password}`);
-      this.apiService.signUp(username, password);
+      this.apiService.signUp(username, password).subscribe({
+        next: (response) => {
+          console.log('User signed up successfully:', response);
+        },
+        error: (error) => {
+          console.error('Error signing up:', error);
+        },
+      });
     }
   }
 }
