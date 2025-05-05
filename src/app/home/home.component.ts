@@ -33,11 +33,11 @@ export class HomeComponent {
   determineTimeOfDay() {
     const currentHour = new Date().getHours();
     if (currentHour < 12) {
-      this.helloMessage = 'Good Morning';
+      this.helloMessage = 'Guten Morgen';
     } else if (currentHour < 18) {
-      this.helloMessage = 'Good Afternoon';
+      this.helloMessage = 'Guten Nachmittag';
     } else {
-      this.helloMessage = 'Good Evening';
+      this.helloMessage = 'Guten Abend';
     }
   }
 
