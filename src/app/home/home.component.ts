@@ -5,27 +5,29 @@ import { RouterLink } from '@angular/router';
 import { RouterOutlet } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../services/api.service';
+import { CoursesComponent } from '../courses/courses.component';
 
 @Component({
   selector: 'app-home',
-  imports: [],
+  imports: [CoursesComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
 export class HomeComponent {
   username: string = '';
   helloMessage: string = '';
-  router = new Router();
+  courses: string[] = [];
 
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService, private router: Router) {}
 
   ngOnInit() {
-    console.log('Home Component Initialized');
     this.determineTimeOfDay();
 
     if (localStorage.getItem('username')) {
       this.username = localStorage.getItem('username')!;
     }
+
+    this.loadCourses();
   }
 
   determineTimeOfDay() {
@@ -37,6 +39,24 @@ export class HomeComponent {
     } else {
       this.helloMessage = 'Good Evening';
     }
+  }
+
+  loadCourses() {
+    this.apiService.loadCourses().subscribe({
+      next: (response) => {
+        this.courses = response.body.map((course: any) => course.name);
+        console.log('Courses loaded successfully:', this.courses);
+      },
+      error: (error) => {
+        console.error('Error loading courses:', error);
+      },
+    });
+  }
+
+  onCourseAdded(courseName: string) {
+    this.courses.push(courseName);
+    console.log('Course added:', courseName);
+    //TODO: Call API to add course
   }
 
   logout() {

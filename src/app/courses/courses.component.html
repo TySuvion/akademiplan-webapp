@@ -1,0 +1,25 @@
+<div class="course-section">
+  <h2>Your Courses</h2>
+  <ul>
+    <li *ngFor="let course of courses">{{ course }}</li>
+  </ul>
+  <button (click)="openCourseForm()">Add Courses</button>
+</div>
+
+<!-- Course Form Popup -->
+<div class="course-form-popup" *ngIf="showCourseForm">
+  <form [formGroup]="courseForm" (ngSubmit)="addCourse()">
+    <h3>Add a New Course</h3>
+    <input type="text" placeholder="Kurs Name" formControlName="courseName" />
+    <button type="submit" [disabled]="courseForm.invalid">Add</button>
+    <button type="button" (click)="closeCourseForm()">Cancel</button>
+    <div *ngIf="courseForm.invalid && (courseForm.dirty || courseForm.touched)">
+      <div *ngIf="courseForm.get('courseName')!.errors?.['required']">
+        Kurs Name darf nicht leer sein.
+      </div>
+      <div *ngIf="courseForm.get('courseName')!.errors?.['minlength']">
+        Kurs Name muss mindestens 3 Zeichen lang sein.
+      </div>
+    </div>
+  </form>
+</div>

@@ -41,4 +41,41 @@ export class ApiService {
   clearToken(): void {
     localStorage.removeItem('token');
   }
+
+  loadCourses(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/courses`, {
+      headers: {
+        Authorization: `Bearer ${this.getToken()}`,
+      },
+      observe: 'response',
+    });
+  }
+
+  saveCourse(course: string): Observable<any> {
+    console.log('User ID got from token: ' + this.getUserIdFromToken());
+    return this.http.post(
+      `${this.baseUrl}/courses`,
+      { name: course },
+      {
+        headers: {
+          Authorization: `Bearer ${this.getToken()}`,
+        },
+        observe: 'response',
+      }
+    );
+  }
+
+  getUserIdFromToken(): string | null {
+    const token = this.getToken();
+    if (!token) return null;
+
+    try {
+      const payload = token.split('.')[1];
+      const decodedPayload = atob(payload);
+      const parsedPayload = JSON.parse(decodedPayload);
+      return parsedPayload.userId;
+    } catch (e) {
+      return null;
+    }
+  }
 }

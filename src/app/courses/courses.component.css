@@ -1,0 +1,44 @@
+.course-section {
+  margin-top: 20px;
+}
+
+.course-section ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.course-section li {
+  padding: 5px 0;
+}
+
+.course-section button {
+  margin-top: 10px;
+}
+
+.course-form-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.course-form-popup form {
+  display: flex;
+  flex-direction: column;
+}
+
+.course-form-popup input {
+  margin-bottom: 10px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.course-form-popup button {
+  margin-top: 5px;
+}
