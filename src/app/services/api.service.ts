@@ -27,8 +27,7 @@ export class ApiService {
 
   logout() {
     console.log('User logged out');
-    localStorage.removeItem('token');
-    localStorage.removeItem('username');
+    localStorage.clear();
   }
 
   saveToken(token: string): void {
