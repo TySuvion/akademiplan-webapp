@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import {
   FormBuilder,
@@ -7,6 +8,7 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { RouterLink, RouterOutlet } from '@angular/router';
+import { ApiService } from '../../services/api.service';
 
 @Component({
   selector: 'app-signup',
@@ -19,7 +21,10 @@ export class SignupComponent {
   showPassword = false;
   showConfirmPassword = false;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private apiService: ApiService
+  ) {
     this.signupForm = this.formBuilder.group({
       username: [
         '',
@@ -44,7 +49,7 @@ export class SignupComponent {
     if (this.signupForm.valid) {
       const { username, password } = this.signupForm.value;
       console.log(`SignUp with: ${username} and ${password}`);
-      // TODO: API Call zu signup User
+      this.apiService.signUp(username, password);
     }
   }
 }
