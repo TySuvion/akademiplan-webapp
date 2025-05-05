@@ -1,15 +1,18 @@
 <div class="course-section">
-  <h2>Your Courses</h2>
+  <h2>Deine Kurse</h2>
+  <hr />
   <ul>
-    <li *ngFor="let course of courses">{{ course }}</li>
+    <li *ngFor="let course of courses">
+      {{ course }}
+    </li>
   </ul>
-  <button (click)="openCourseForm()">Add Courses</button>
+  <button (click)="openCourseForm()">Kurs hinzufügen</button>
 </div>
 
 <!-- Course Form Popup -->
 <div class="course-form-popup" *ngIf="showCourseForm">
-  <form [formGroup]="courseForm" (ngSubmit)="addCourse()">
-    <h3>Add a New Course</h3>
+  <form [formGroup]="courseForm" (ngSubmit)="addCourseAndReload()">
+    <h3>Neuen Kurs hinzufügen</h3>
     <input type="text" placeholder="Kurs Name" formControlName="courseName" />
     <button type="submit" [disabled]="courseForm.invalid">Add</button>
     <button type="button" (click)="closeCourseForm()">Cancel</button>

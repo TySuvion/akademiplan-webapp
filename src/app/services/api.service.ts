@@ -43,7 +43,8 @@ export class ApiService {
   }
 
   loadCourses(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/courses`, {
+    const userId = this.getUserIdFromToken();
+    return this.http.get(`${this.baseUrl}/courses/user/${userId}`, {
       headers: {
         Authorization: `Bearer ${this.getToken()}`,
       },
@@ -52,10 +53,10 @@ export class ApiService {
   }
 
   saveCourse(course: string): Observable<any> {
-    console.log('User ID got from token: ' + this.getUserIdFromToken());
+    const uId = this.getUserIdFromToken();
     return this.http.post(
       `${this.baseUrl}/courses`,
-      { name: course },
+      { name: course, userId: uId },
       {
         headers: {
           Authorization: `Bearer ${this.getToken()}`,
@@ -73,7 +74,7 @@ export class ApiService {
       const payload = token.split('.')[1];
       const decodedPayload = atob(payload);
       const parsedPayload = JSON.parse(decodedPayload);
-      return parsedPayload.userId;
+      return parsedPayload.id;
     } catch (e) {
       return null;
     }

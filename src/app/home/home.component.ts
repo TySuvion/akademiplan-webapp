@@ -53,12 +53,6 @@ export class HomeComponent {
     });
   }
 
-  onCourseAdded(courseName: string) {
-    this.courses.push(courseName);
-    console.log('Course added:', courseName);
-    //TODO: Call API to add course
-  }
-
   logout() {
     this.apiService.logout();
     this.router.navigate(['/login']);
