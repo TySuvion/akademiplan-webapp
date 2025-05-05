@@ -1,5 +1,10 @@
 .course-section {
   margin-top: 20px;
+  border: 1px solid black;
+  border-radius: 8px;
+  padding: 15px;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 .course-section ul {
