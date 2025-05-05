@@ -1,10 +1,10 @@
 <div class="signup-container">
-  <h1>Please Sign Up</h1>
+  <h1>Registrieren</h1>
   <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
     <div>
       <input
         type="text"
-        placeholder="enter username"
+        placeholder="username (3-20 Zeichen)"
         formControlName="username"
       />
     </div>
@@ -12,29 +12,30 @@
     <div>
       <input
         [type]="showPassword ? 'text' : 'password'"
-        placeholder="enter password"
+        placeholder="password (8-20 Zeichen)"
         formControlName="password"
       />
       <button type="button" (click)="showPassword = !showPassword">
-        {{ showPassword ? "Hide" : "Show" }}
+        {{ showPassword ? "Verstecken" : "Anzeigen" }}
       </button>
     </div>
     <br />
     <div>
       <input
         [type]="showConfirmPassword ? 'text' : 'password'"
-        placeholder="confirm password"
+        placeholder="password wiederholen"
         formControlName="confirmPassword"
       />
       <button
         type="button"
         (click)="showConfirmPassword = !showConfirmPassword"
       >
-        {{ showConfirmPassword ? "Hide" : "Show" }}
+        {{ showConfirmPassword ? "Verstecken" : "Anzeigen" }}
       </button>
     </div>
     <br />
-    <button type="submit" [disabled]="signupForm.invalid">Submit</button>
+    <button type="submit" [disabled]="signupForm.invalid">Absenden</button>
   </form>
+  <div class="error">{{ errorMessage }}</div>
   <p>Already have an account? <a routerLink="/login">Login here</a></p>
 </div>

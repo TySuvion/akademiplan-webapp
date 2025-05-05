@@ -19,6 +19,7 @@ export class LoginComponent {
   showPassword = false;
   showConfirmPassword = false;
   loginForm!: FormGroup;
+  errorMessage = '';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -33,15 +34,14 @@ export class LoginComponent {
   onSubmit() {
     if (this.loginForm.valid) {
       const { username, password } = this.loginForm.value;
-      console.log(`Login with: ${username} and ${password}`);
       this.apiService.login(username, password).subscribe({
         next: (response) => {
-          console.log('User logged in successfully:', response);
           this.apiService.saveToken(response.body.accessToken);
           localStorage.setItem('username', username);
           this.router.navigate(['/home']);
         },
         error: (error) => {
+          this.errorMessage = 'Ungültiger Benutzername oder Passwort';
           console.error('Error logging in:', error);
         },
       });

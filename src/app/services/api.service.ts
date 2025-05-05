@@ -66,6 +66,30 @@ export class ApiService {
     );
   }
 
+  deleteUser(): Observable<any> {
+    const userId = this.getUserIdFromToken();
+    return this.http.delete(`${this.baseUrl}/users/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${this.getToken()}`,
+      },
+      observe: 'response',
+    });
+  }
+
+  editUsername(newUsername: string): Observable<any> {
+    const userId = this.getUserIdFromToken();
+    return this.http.patch(
+      `${this.baseUrl}/users/${userId}`,
+      { username: newUsername },
+      {
+        headers: {
+          Authorization: `Bearer ${this.getToken()}`,
+        },
+        observe: 'response',
+      }
+    );
+  }
+
   getUserIdFromToken(): string | null {
     const token = this.getToken();
     if (!token) return null;

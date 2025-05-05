@@ -1,26 +1,26 @@
 <div class="login-container">
-  <h1>Please Login</h1>
+  <h1>Login</h1>
   <form class="login-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
     <div>
-      <input
-        type="text"
-        placeholder="enter username"
-        formControlName="username"
-      />
+      <input type="text" placeholder="username" formControlName="username" />
     </div>
     <br />
     <div>
       <input
         [type]="showPassword ? 'text' : 'password'"
-        placeholder="enter password"
+        placeholder="password"
         formControlName="password"
       />
       <button type="button" (click)="showPassword = !showPassword">
-        {{ showPassword ? "Hide" : "Show" }}
+        {{ showPassword ? "Verstecken" : "Anzeigen" }}
       </button>
     </div>
     <br />
-    <button type="submit" [disabled]="loginForm.invalid">Submit</button>
+    <button type="submit" [disabled]="loginForm.invalid">Absenden</button>
   </form>
-  <p>Don't have an account? <a routerLink="/signup">Sign up here</a></p>
+  <div class="error">{{ errorMessage }}</div>
+  <p>
+    Du hast noch keinen Account?
+    <a routerLink="/signup">hier geht's zum Registrieren</a>
+  </p>
 </div>

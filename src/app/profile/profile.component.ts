@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
+import { ApiService } from '../services/api.service';
 
 @Component({
   selector: 'app-profile',
@@ -9,7 +10,8 @@ import { Router, RouterLink } from '@angular/router';
 })
 export class ProfileComponent {
   username: string = '';
-  router = new Router();
+
+  constructor(private router: Router, private apiService: ApiService) {}
 
   ngOnInit() {
     if (localStorage.getItem('username')) {
@@ -18,11 +20,36 @@ export class ProfileComponent {
   }
 
   editUsername() {
-    console.log('Changed Username to {{this.username}}');
+    const newUsername = prompt('Enter new username:', this.username);
+    if (newUsername) {
+      this.apiService.editUsername(newUsername).subscribe({
+        next: (response) => {
+          console.log('Username updated successfully:', response);
+          localStorage.setItem('username', newUsername);
+          this.username = newUsername;
+        },
+        error: (error) => {
+          console.error('Error updating username:', error);
+        },
+      });
+    }
   }
 
   goToHome() {
     console.log('Go to Home');
     this.router.navigate(['/home']);
+  }
+
+  deleteUser() {
+    this.apiService.deleteUser().subscribe({
+      next: (response) => {
+        console.log('User deleted successfully:', response);
+        localStorage.clear();
+        this.router.navigate(['/signup']);
+      },
+      error: (error) => {
+        console.error('Error deleting user:', error);
+      },
+    });
   }
 }
