@@ -24,4 +24,22 @@ export class ApiService {
       { observe: 'response' }
     );
   }
+
+  logout() {
+    console.log('User logged out');
+    localStorage.removeItem('token');
+    localStorage.removeItem('username');
+  }
+
+  saveToken(token: string): void {
+    localStorage.setItem('token', token);
+  }
+
+  getToken(): string | null {
+    return localStorage.getItem('token');
+  }
+
+  clearToken(): void {
+    localStorage.removeItem('token');
+  }
 }

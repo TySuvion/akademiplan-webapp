@@ -4,21 +4,28 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { RouterOutlet } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { ApiService } from '../services/api.service';
 
 @Component({
   selector: 'app-home',
-  imports: [RouterLink],
+  imports: [],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
 export class HomeComponent {
-  username: string = 'Tyler';
+  username: string = '';
   helloMessage: string = '';
   router = new Router();
+
+  constructor(private apiService: ApiService) {}
 
   ngOnInit() {
     console.log('Home Component Initialized');
     this.determineTimeOfDay();
+
+    if (localStorage.getItem('username')) {
+      this.username = localStorage.getItem('username')!;
+    }
   }
 
   determineTimeOfDay() {
@@ -33,8 +40,7 @@ export class HomeComponent {
   }
 
   logout() {
-    console.log('Logout');
-    //TODO: API Call to logout User
+    this.apiService.logout();
     this.router.navigate(['/login']);
   }
 
