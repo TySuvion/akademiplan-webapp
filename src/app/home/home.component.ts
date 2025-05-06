@@ -26,8 +26,6 @@ export class HomeComponent {
     if (localStorage.getItem('username')) {
       this.username = localStorage.getItem('username')!;
     }
-
-    this.loadCourses();
   }
 
   determineTimeOfDay() {
@@ -39,18 +37,6 @@ export class HomeComponent {
     } else {
       this.helloMessage = 'Guten Abend';
     }
-  }
-
-  loadCourses() {
-    this.apiService.loadCourses().subscribe({
-      next: (response) => {
-        this.courses = response.body.map((course: any) => course.name);
-        console.log('Courses loaded successfully:', this.courses);
-      },
-      error: (error) => {
-        console.error('Error loading courses:', error);
-      },
-    });
   }
 
   logout() {

@@ -7,6 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { ApiService } from '../services/api.service';
+import { Course } from '../models/course.model';
 
 @Component({
   selector: 'app-courses',
@@ -15,7 +16,7 @@ import { ApiService } from '../services/api.service';
   styleUrl: './courses.component.css',
 })
 export class CoursesComponent {
-  courses: string[] = [];
+  courses: Course[] = [];
 
   showCourseForm = false;
   courseForm!: FormGroup;
@@ -36,15 +37,15 @@ export class CoursesComponent {
   addCourseAndReload() {
     if (this.courseForm.valid) {
       const courseName = this.courseForm.get('courseName')?.value;
-      this.apiService.saveCourse(courseName).subscribe({
-        next: (response) => {
-          console.log('Course added successfully:', response);
+      this.apiService.createCourse(courseName).subscribe({
+        next: (course) => {
+          console.log('Course added successfully:', course);
+          this.loadCourses();
         },
         error: (error) => {
           console.error('Error adding course:', error);
         },
       });
-      this.loadCourses();
       this.courseForm.reset();
       this.showCourseForm = false;
     }
@@ -52,12 +53,9 @@ export class CoursesComponent {
 
   loadCourses() {
     this.apiService.loadCourses().subscribe({
-      next: (response) => {
-        this.courses = response.body.map((course: any) => course.name);
+      next: (courses) => {
+        this.courses = courses;
         console.log('Courses loaded successfully:', this.courses);
-      },
-      error: (error) => {
-        console.error('Error loading courses:', error);
       },
     });
   }
@@ -72,10 +70,30 @@ export class CoursesComponent {
   }
 
   deleteCourse(courseId: number) {
-    //TODO: Implement delete course functionality
+    this.apiService.deleteCourse(courseId).subscribe({
+      next: () => {
+        console.log('Course deleted successfully');
+        this.loadCourses();
+      },
+      error: (error) => {
+        console.error('Error deleting course:', error);
+      },
+    });
   }
 
   editCourse(courseId: number) {
-    //TODO: Implement edit course functionality
+    const newCourseName = prompt('Enter new course name:');
+    if (!newCourseName) {
+      return;
+    }
+    this.apiService.updateCourse(courseId, newCourseName).subscribe({
+      next: () => {
+        console.log('Course updated successfully');
+        this.loadCourses();
+      },
+      error: (error) => {
+        console.error('Error updating course:', error);
+      },
+    });
   }
 }

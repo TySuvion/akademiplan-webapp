@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Course } from '../models/course.model';
 
 @Injectable({
   providedIn: 'root',
@@ -42,26 +43,24 @@ export class ApiService {
     localStorage.removeItem('token');
   }
 
-  loadCourses(): Observable<any> {
+  loadCourses(): Observable<Course[]> {
     const userId = this.getUserIdFromToken();
-    return this.http.get(`${this.baseUrl}/courses/user/${userId}`, {
+    return this.http.get<Course[]>(`${this.baseUrl}/courses/user/${userId}`, {
       headers: {
         Authorization: `Bearer ${this.getToken()}`,
       },
-      observe: 'response',
     });
   }
 
-  saveCourse(course: string): Observable<any> {
+  createCourse(course: string): Observable<Course> {
     const uId = this.getUserIdFromToken();
-    return this.http.post(
+    return this.http.post<Course>(
       `${this.baseUrl}/courses`,
       { name: course, userId: uId },
       {
         headers: {
           Authorization: `Bearer ${this.getToken()}`,
         },
-        observe: 'response',
       }
     );
   }
@@ -102,5 +101,21 @@ export class ApiService {
     } catch (e) {
       return null;
     }
+  }
+
+  updateCourse(courseId: number, courseName: string): Observable<Course> {
+    return this.http.patch<Course>(
+      `${this.baseUrl}/courses/${courseId}`,
+      { name: courseName },
+      {
+        headers: { Authorization: `Bearer ${this.getToken()}` },
+      }
+    );
+  }
+
+  deleteCourse(courseId: number): Observable<Course> {
+    return this.http.delete<Course>(`${this.baseUrl}/courses/${courseId}`, {
+      headers: { Authorization: `Bearer ${this.getToken()}` },
+    });
   }
 }
