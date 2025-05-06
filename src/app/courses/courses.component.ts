@@ -70,4 +70,12 @@ export class CoursesComponent {
     this.showCourseForm = false;
     this.courseForm.reset();
   }
+
+  deleteCourse(courseId: number) {
+    //TODO: Implement delete course functionality
+  }
+
+  editCourse(courseId: number) {
+    //TODO: Implement edit course functionality
+  }
 }

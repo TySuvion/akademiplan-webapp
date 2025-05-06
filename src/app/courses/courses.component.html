@@ -4,6 +4,8 @@
   <ul>
     <li *ngFor="let course of courses">
       {{ course }}
+      <button (click)="deleteCourse(1)">Löschen</button>
+      <button (click)="editCourse(1)">Bearbeiten</button>
     </li>
   </ul>
   <button (click)="openCourseForm()">Kurs hinzufügen</button>
