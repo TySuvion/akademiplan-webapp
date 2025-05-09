@@ -10,11 +10,25 @@ import {
 import { RouterLink, RouterOutlet, Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { CommonModule } from '@angular/common';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
-  imports: [ReactiveFormsModule, RouterLink, CommonModule],
+  imports: [
+    ReactiveFormsModule,
+    RouterLink,
+    CommonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+    MatCardModule,
+  ],
   styleUrls: ['./signup.component.css'],
 })
 export class SignupComponent {
