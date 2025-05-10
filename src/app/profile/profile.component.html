@@ -1,12 +1,20 @@
-<div class="navbar">
-  <input type="button" value="Home" (click)="goToHome()" />
-</div>
-<div>
-  <h1>Profile</h1>
-  <div class="profile-container">
+<mat-toolbar color="primary">
+  <span>AkademiPlan</span>
+  <span class="spacer"></span>
+  <button mat-button (click)="goToHome()">Home</button>
+</mat-toolbar>
+
+<mat-card class="profile-card">
+  <mat-card-header>
+    <mat-card-title>Profil</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
     <p>Username: {{ username }}</p>
-    <button (click)="editUsername()">Edit Username</button> <br />
-    <hr />
-    <button (click)="deleteUser()">Delete User</button>
-  </div>
-</div>
+  </mat-card-content>
+
+  <mat-card-actions>
+    <button mat-button (click)="editUsername()">Username bearbeiten</button>
+    <button mat-button (click)="deleteUser()">Account löschen</button>
+  </mat-card-actions></mat-card
+>

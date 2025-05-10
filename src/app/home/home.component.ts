@@ -14,8 +14,6 @@ import { MatCardModule } from '@angular/material/card';
   selector: 'app-home',
   imports: [
     CommonModule,
-    RouterLink,
-    RouterOutlet,
     FormsModule,
     MatToolbarModule,
     MatButtonModule,

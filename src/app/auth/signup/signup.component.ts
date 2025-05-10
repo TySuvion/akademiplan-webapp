@@ -44,7 +44,6 @@ export class SignupComponent {
     private apiService: ApiService,
     private router: Router
   ) {
-    console.log('ApiService: ', this.apiService);
     this.signupForm = this.formBuilder.group(
       {
         username: [

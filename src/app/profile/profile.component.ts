@@ -1,10 +1,13 @@
 import { Component } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { ApiService } from '../services/api.service';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-profile',
-  imports: [],
+  imports: [MatButtonModule, MatCardModule, MatToolbarModule],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css',
 })
