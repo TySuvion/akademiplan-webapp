@@ -21,13 +21,13 @@ import { MatCardModule } from '@angular/material/card';
   templateUrl: './signup.component.html',
   imports: [
     ReactiveFormsModule,
-    RouterLink,
     CommonModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
     MatIconModule,
     MatCardModule,
+    RouterLink,
   ],
   styleUrls: ['./signup.component.css'],
 })
@@ -43,18 +43,23 @@ export class SignupComponent {
     private router: Router
   ) {
     console.log('ApiService: ', this.apiService);
-    this.signupForm = this.formBuilder.group({
-      username: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(3),
-          Validators.maxLength(15),
+    this.signupForm = this.formBuilder.group(
+      {
+        username: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(3),
+            Validators.maxLength(15),
+          ],
         ],
-      ],
-      password: ['', [Validators.required, Validators.minLength(8)]],
-      confirmPassword: ['', Validators.required],
-    });
+        password: ['', [Validators.required, Validators.minLength(8)]],
+        confirmPassword: ['', Validators.required],
+      },
+      {
+        validators: this.passwordMatchValidator,
+      }
+    );
   }
 
   passwordMatchValidator(form: FormGroup) {
@@ -73,7 +78,7 @@ export class SignupComponent {
         },
         error: (error) => {
           this.errorMessage =
-            'Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut. Prüfe ob das Passwort und der Benutzername den Anforderungen entsprechen.';
+            'Ein Fehler ist aufgetreten. Nutzername möglicherweise bereits vergeben.';
           console.error('Error signing up:', error);
         },
       });
