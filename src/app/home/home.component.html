@@ -1,10 +1,14 @@
-<div class="navbar">
-  <input type="button" value="Logout" (click)="logout()" />
-  <input type="button" value="Profile" (click)="goToProfile()" />
-</div>
+<mat-toolbar color="primary" class="navbar">
+  <span>AkademiPlan</span>
+  <span class="spacer"></span>
+  <button mat-button (click)="goToProfile()">Profile</button>
+  <button mat-button (click)="logout()">Logout</button>
+</mat-toolbar>
 
-<div class="home-title">
-  <h1>{{ helloMessage }} {{ username }}!</h1>
-</div>
+<div class="home-container">
+  <mat-card class="home-title-card">
+    <mat-card-title>{{ helloMessage }} {{ username }}!</mat-card-title>
+  </mat-card>
 
-<app-courses></app-courses>
+  <app-courses></app-courses>
+</div>

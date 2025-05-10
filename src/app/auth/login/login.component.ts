@@ -14,6 +14,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @Component({
   selector: 'app-login',
@@ -26,6 +27,7 @@ import { CommonModule } from '@angular/common';
     MatIconModule,
     MatCardModule,
     RouterLink,
+    MatToolbarModule,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',

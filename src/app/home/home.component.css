@@ -1,17 +1,20 @@
-.home-title {
-  font-size: 2em;
-  color: #333;
-  text-align: center;
-}
-
 .navbar {
-  justify-content: space-between;
-  padding: 10px;
-  background-color: #f8f8f8;
-  border: 1px solid #ccc;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
 }
 
-.navbar input {
-  float: right;
-  margin-left: 10px;
+.spacer {
+  flex: 1;
+}
+
+.home-container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 16px;
+}
+
+.home-title-card {
+  margin-bottom: 20px;
+  text-align: center;
 }

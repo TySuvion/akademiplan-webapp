@@ -15,6 +15,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @Component({
   selector: 'app-signup',
@@ -28,6 +29,7 @@ import { MatCardModule } from '@angular/material/card';
     MatIconModule,
     MatCardModule,
     RouterLink,
+    MatToolbarModule,
   ],
   styleUrls: ['./signup.component.css'],
 })

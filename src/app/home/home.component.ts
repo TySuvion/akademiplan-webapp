@@ -6,10 +6,22 @@ import { RouterOutlet } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../services/api.service';
 import { CoursesComponent } from '../courses/courses.component';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-home',
-  imports: [CoursesComponent],
+  imports: [
+    CommonModule,
+    RouterLink,
+    RouterOutlet,
+    FormsModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatCardModule,
+    CoursesComponent,
+  ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
