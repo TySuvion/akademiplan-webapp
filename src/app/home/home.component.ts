@@ -9,6 +9,7 @@ import { CoursesComponent } from '../courses/courses.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { CalendarComponent } from '../calendar/calendar.component';
 
 @Component({
   selector: 'app-home',
@@ -19,6 +20,7 @@ import { MatCardModule } from '@angular/material/card';
     MatButtonModule,
     MatCardModule,
     CoursesComponent,
+    CalendarComponent,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',

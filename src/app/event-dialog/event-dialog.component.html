@@ -1,0 +1,36 @@
+<h2 mat-dialog-title>
+  {{ data.event ? "Event bearbeiten" : "Neues Event erstellen" }}
+</h2>
+<form [formGroup]="eventForm" (ngSubmit)="onSubmit()">
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Name</mat-label>
+    <input matInput formControlName="name" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Beschreibung</mat-label>
+    <textarea matInput formControlName="description"></textarea>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Startzeit</mat-label>
+    <input matInput type="datetime-local" formControlName="start" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Endzeit</mat-label>
+    <input matInput type="datetime-local" formControlName="end" />
+  </mat-form-field>
+
+  <div class="dialog-actions">
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [disabled]="eventForm.invalid"
+    >
+      Speichern
+    </button>
+    <button mat-button mat-dialog-close>Abbrechen</button>
+  </div>
+</form>

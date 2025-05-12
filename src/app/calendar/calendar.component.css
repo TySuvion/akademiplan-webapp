@@ -1,0 +1,19 @@
+.calendar-container {
+  margin: 20px auto;
+  max-width: 800px;
+}
+
+.calendar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.event-card {
+  margin-bottom: 16px;
+}
+
+.event-time {
+  font-size: 0.9rem;
+  color: gray;
+}

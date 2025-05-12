@@ -1,31 +1,72 @@
-import { Component, Input } from '@angular/core';
-import { CalendarEvent } from '../models/event.model';
-import { ApiService } from '../services/api.service';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { ApiService } from '../services/api.service';
+import { CalendarEvent } from '../models/event.model';
+import { EventDialogComponent } from '../event-dialog/event-dialog.component';
+import { MatCard, MatCardModule } from '@angular/material/card';
+import { CommonModule } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-calendar',
-  imports: [],
   templateUrl: './calendar.component.html',
-  styleUrl: './calendar.component.css',
+  styleUrls: ['./calendar.component.css'],
+  imports: [MatCardModule, CommonModule, MatIconModule, MatButtonModule],
 })
-export class CalendarComponent {
-  @Input() selectedDate: Date = new Date();
-  calendarEvents: CalendarEvent[] = [];
+export class CalendarComponent implements OnInit {
+  selectedDate: Date = new Date();
+  events: CalendarEvent[] = [];
 
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService, private dialog: MatDialog) {}
 
   ngOnInit() {
     this.loadEvents();
   }
 
   loadEvents() {
-    //TODO load Events
+    const formattedDate = this.selectedDate.toISOString().split('T')[0];
+    this.apiService.getEventsForDate(formattedDate).subscribe({
+      next: (response) => {
+        this.events = response.sort(
+          (a, b) => new Date(a.start).getTime() - new Date(b.start).getTime()
+        );
+      },
+      error: (error) => console.error('Error loading events:', error),
+    });
   }
 
-  editEvent(eventId: number) {
-    //TODO implement
+  changeDay(offset: number) {
+    this.selectedDate.setDate(this.selectedDate.getDate() + offset);
+    this.loadEvents();
   }
 
-  deleteEvent(eventId: number) {}
+  openEventDialog() {
+    const dialogRef = this.dialog.open(EventDialogComponent, {
+      width: '400px',
+      data: { date: this.selectedDate },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) this.loadEvents();
+    });
+  }
+
+  editEvent(event: CalendarEvent) {
+    const dialogRef = this.dialog.open(EventDialogComponent, {
+      width: '400px',
+      data: { event },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) this.loadEvents();
+    });
+  }
+
+  deleteEvent(eventId: number) {
+    this.apiService.deleteEvent(eventId).subscribe({
+      next: () => this.loadEvents(),
+      error: (error) => console.error('Error deleting event:', error),
+    });
+  }
 }

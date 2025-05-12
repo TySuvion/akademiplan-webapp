@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Course } from '../models/course.model';
+import { CalendarEvent } from '../models/event.model';
 
 @Injectable({
   providedIn: 'root',
@@ -117,5 +118,33 @@ export class ApiService {
     return this.http.delete<Course>(`${this.baseUrl}/courses/${courseId}`, {
       headers: { Authorization: `Bearer ${this.getToken()}` },
     });
+  }
+
+  getEventsForDate(date: string): Observable<CalendarEvent[]> {
+    const userId = this.getUserIdFromToken(); // Extract user ID from the token
+    if (!userId) {
+      throw new Error('User ID is missing from the token.');
+    }
+    return this.http.get<CalendarEvent[]>(
+      `${this.baseUrl}/events/user/${userId}/${date}`,
+      {
+        headers: { Authorization: `Bearer ${this.getToken()}` },
+      }
+    );
+  }
+
+  createEvent(event: CalendarEvent): Observable<CalendarEvent> {
+    return this.http.post<CalendarEvent>(`${this.baseUrl}/events`, event);
+  }
+
+  updateEvent(event: CalendarEvent): Observable<CalendarEvent> {
+    return this.http.put<CalendarEvent>(
+      `${this.baseUrl}/events/${event.id}`,
+      event
+    );
+  }
+
+  deleteEvent(eventId: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/events/${eventId}`);
   }
 }
