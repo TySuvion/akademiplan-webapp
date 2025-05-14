@@ -7,6 +7,7 @@ import { MatCard, MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { Course } from '../models/course.model';
 
 @Component({
   selector: 'app-calendar',
@@ -75,5 +76,22 @@ export class CalendarComponent implements OnInit {
       next: () => this.loadEvents(),
       error: (error) => console.error('Error deleting event:', error),
     });
+  }
+
+  getCourseName(courseId: number) {
+    if (!courseId) {
+      return 'No course';
+    }
+    let courseName = '';
+    const course = this.apiService.getCourseById(courseId).subscribe({
+      next: (course) => {
+        courseName = course.name;
+        console.log('Course name:', courseName);
+      },
+      error: (error) => {
+        console.error('Error loading course:', error);
+      },
+    });
+    return courseName;
   }
 }

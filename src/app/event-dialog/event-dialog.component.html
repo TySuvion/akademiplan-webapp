@@ -13,6 +13,16 @@
   </mat-form-field>
 
   <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Kurs</mat-label>
+    <mat-select formControlName="course">
+      <mat-option [value]="null">Kein Kurs</mat-option>
+      <mat-option *ngFor="let course of courses" [value]="course.id">
+        {{ course.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
     <mat-label>Startzeit</mat-label>
     <input matInput type="datetime-local" formControlName="start" />
   </mat-form-field>

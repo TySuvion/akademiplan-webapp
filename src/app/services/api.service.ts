@@ -44,6 +44,14 @@ export class ApiService {
     localStorage.removeItem('token');
   }
 
+  getCourseById(courseId: number): Observable<Course> {
+    return this.http.get<Course>(`${this.baseUrl}/courses/${courseId}`, {
+      headers: {
+        Authorization: `Bearer ${this.getToken()}`,
+      },
+    });
+  }
+
   loadCourses(): Observable<Course[]> {
     const userId = this.getUserIdFromToken();
     return this.http.get<Course[]>(`${this.baseUrl}/courses/user/${userId}`, {
@@ -133,8 +141,28 @@ export class ApiService {
     );
   }
 
-  createEvent(event: CalendarEvent): Observable<CalendarEvent> {
-    return this.http.post<CalendarEvent>(`${this.baseUrl}/events`, event);
+  createEvent(
+    name: string,
+    description: string,
+    start: Date,
+    end: Date,
+    courseId?: number | null
+  ): Observable<CalendarEvent> {
+    const uId = this.getUserIdFromToken();
+    return this.http.post<CalendarEvent>(
+      `${this.baseUrl}/events`,
+      {
+        name: name,
+        description: description,
+        start: start.toISOString(),
+        end: end.toISOString(),
+        courseId: courseId,
+        userId: uId,
+      },
+      {
+        headers: { Authorization: `Bearer ${this.getToken()}` },
+      }
+    );
   }
 
   updateEvent(event: CalendarEvent): Observable<CalendarEvent> {

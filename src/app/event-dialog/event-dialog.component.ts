@@ -17,6 +17,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatButton, MatButtonModule } from '@angular/material/button';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
+import { CalendarEvent } from '../models/event.model';
+import { CoursesComponent } from '../courses/courses.component';
+import { Course } from '../models/course.model';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-event-dialog',
@@ -31,10 +35,12 @@ import { MatIcon, MatIconModule } from '@angular/material/icon';
     MatButtonModule,
     MatIconModule,
     MatDialogModule,
+    MatSelectModule,
   ],
 })
 export class EventDialogComponent {
   eventForm: FormGroup;
+  courses: Course[] = [];
 
   constructor(
     private dialogRef: MatDialogRef<EventDialogComponent>,
@@ -45,22 +51,43 @@ export class EventDialogComponent {
     this.eventForm = this.formBuilder.group({
       name: [data.event?.name || '', Validators.required],
       description: [data.event?.description || ''],
+      course: [data.event?.course],
       start: [data.event?.start || '', Validators.required],
       end: [data.event?.end || '', Validators.required],
     });
+
+    this.apiService
+      .loadCourses()
+      .subscribe((courses) => (this.courses = courses));
   }
 
   onSubmit() {
     if (this.eventForm.valid) {
       const event = { ...this.eventForm.value, id: this.data.event?.id };
+      const startDate = new Date(event.start);
+      const endDate = new Date(event.end);
+      const name = event.name.trim();
+      const description = event.description.trim();
+      const courseId = event.course;
       const request = this.data.event
         ? this.apiService.updateEvent(event)
-        : this.apiService.createEvent(event);
+        : this.apiService.createEvent(
+            name,
+            description,
+            startDate,
+            endDate,
+            courseId
+          );
 
       request.subscribe({
         next: () => this.dialogRef.close(true),
         error: (error) => console.error('Error saving event:', error),
       });
     }
+  }
+
+  getCurrentDate(): string {
+    const date = new Date();
+    return date.toISOString();
   }
 }
