@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal, WritableSignal } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ApiService } from '../services/api.service';
 import { CalendarEvent } from '../models/event.model';
@@ -16,6 +16,8 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class CalendarComponent implements OnInit {
   selectedDate: Date = new Date();
+  selectedDateSignal: WritableSignal<Date> = signal(this.selectedDate);
+
   events: CalendarEvent[] = [];
 
   constructor(private apiService: ApiService, private dialog: MatDialog) {}
@@ -32,12 +34,17 @@ export class CalendarComponent implements OnInit {
           (a, b) => new Date(a.start).getTime() - new Date(b.start).getTime()
         );
       },
-      error: (error) => console.error('Error loading events:', error),
+      error: (error) => {
+        console.error('Error loading events:', error);
+        this.events = [];
+      },
     });
   }
 
   changeDay(offset: number) {
     this.selectedDate.setDate(this.selectedDate.getDate() + offset);
+    const newDate = new Date(this.selectedDate);
+    this.selectedDateSignal.set(newDate);
     this.loadEvents();
   }
 

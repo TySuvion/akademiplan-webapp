@@ -2,7 +2,8 @@
   <mat-card>
     <mat-card-header>
       <mat-card-title
-        >Termine - {{ selectedDate | date : "fullDate" }}</mat-card-title
+        >Termine -
+        {{ selectedDateSignal() | date : "fullDate" }}</mat-card-title
       >
       <div class="calendar-actions">
         <button mat-raised-button (click)="changeDay(-1)">
@@ -23,8 +24,12 @@
       <div *ngFor="let event of events" class="event-card">
         <mat-card>
           <mat-card-header>
-            <div class="event-time">{{ event.start | date : "shortTime" }}</div>
+            <br />
             <mat-card-title>{{ event.name }}</mat-card-title>
+            <mat-card-subtitle>
+              {{ event.start | date : "HH:mm" }} -
+              {{ event.end | date : "HH:mm" }}
+            </mat-card-subtitle>
           </mat-card-header>
           <mat-card-content>
             <p>{{ event.description }}</p>

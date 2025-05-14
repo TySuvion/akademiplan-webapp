@@ -138,7 +138,7 @@ export class ApiService {
   }
 
   updateEvent(event: CalendarEvent): Observable<CalendarEvent> {
-    return this.http.put<CalendarEvent>(
+    return this.http.patch<CalendarEvent>(
       `${this.baseUrl}/events/${event.id}`,
       event
     );
