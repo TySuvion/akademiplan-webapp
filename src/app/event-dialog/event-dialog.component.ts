@@ -53,11 +53,11 @@ export class EventDialogComponent {
       description: [data.event?.description || ''],
       course: [data.event?.courseId || null],
       start: [
-        this.formatDateForInput(data.event?.start) || '',
+        this.getRelevantDateInput(data.event?.start) || '',
         Validators.required,
       ],
       end: [
-        this.formatDateForInput(data.event?.end) || '',
+        this.getRelevantDateInput(data.event?.end) || '',
         Validators.required,
       ],
     });
@@ -104,9 +104,11 @@ export class EventDialogComponent {
     return date.toLocaleString('sv');
   }
 
-  formatDateForInput(date: Date | string): string {
+  getRelevantDateInput(date: Date | string): string {
     if (!date) {
-      console.log(new Date());
+      if (this.data.date) {
+        return new Date(this.data.date).toLocaleString('sv').slice(0, 16);
+      }
       return new Date().toLocaleString('sv').slice(0, 16);
     }
     const d = new Date(date);
