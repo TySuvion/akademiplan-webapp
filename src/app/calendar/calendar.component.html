@@ -1,8 +1,7 @@
 <div class="calendar-container">
   <mat-card>
     <mat-card-header>
-      <mat-card-title
-        >Termine -
+      <mat-card-title>
         {{ selectedDateSignal() | date : "fullDate" }}</mat-card-title
       >
       <div class="calendar-actions">
@@ -33,7 +32,9 @@
           </mat-card-header>
           <mat-card-content>
             <p>{{ event.description }}</p>
-            <p>Kurs: {{ getCourseName(event.courseId) }}</p>
+            <p *ngIf="event.courseId != null">
+              Kurs: {{ getCourseName(event.courseId) }}
+            </p>
           </mat-card-content>
           <mat-card-actions>
             <button mat-icon-button color="primary" (click)="editEvent(event)">

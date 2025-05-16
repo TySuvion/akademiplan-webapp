@@ -51,9 +51,15 @@ export class EventDialogComponent {
     this.eventForm = this.formBuilder.group({
       name: [data.event?.name || '', Validators.required],
       description: [data.event?.description || ''],
-      course: [data.event?.course],
-      start: [data.event?.start || '', Validators.required],
-      end: [data.event?.end || '', Validators.required],
+      course: [data.event?.courseId || null],
+      start: [
+        this.formatDateForInput(data.event?.start) || '',
+        Validators.required,
+      ],
+      end: [
+        this.formatDateForInput(data.event?.end) || '',
+        Validators.required,
+      ],
     });
 
     this.apiService
@@ -70,7 +76,14 @@ export class EventDialogComponent {
       const description = event.description.trim();
       const courseId = event.course;
       const request = this.data.event
-        ? this.apiService.updateEvent(event)
+        ? this.apiService.updateEvent(
+            event.id,
+            name,
+            description,
+            startDate,
+            endDate,
+            courseId
+          )
         : this.apiService.createEvent(
             name,
             description,
@@ -88,6 +101,16 @@ export class EventDialogComponent {
 
   getCurrentDate(): string {
     const date = new Date();
-    return date.toISOString();
+    return date.toLocaleString('sv');
+  }
+
+  formatDateForInput(date: Date | string): string {
+    if (!date) {
+      console.log(new Date());
+      return new Date().toLocaleString('sv').slice(0, 16);
+    }
+    const d = new Date(date);
+    //Format as YYYY-MM-DDThh:mm
+    return d.toLocaleString('sv').slice(0, 16);
   }
 }

@@ -20,15 +20,25 @@ export class CalendarComponent implements OnInit {
   selectedDateSignal: WritableSignal<Date> = signal(this.selectedDate);
 
   events: CalendarEvent[] = [];
+  courses: Course[] = [];
 
   constructor(private apiService: ApiService, private dialog: MatDialog) {}
 
   ngOnInit() {
     this.loadEvents();
+    this.apiService.loadCourses().subscribe({
+      next: (course) => {
+        this.courses = course;
+      },
+      error: (error) => {
+        console.error('Error loading courses:', error);
+        this.courses = [];
+      },
+    });
   }
 
   loadEvents() {
-    const formattedDate = this.selectedDate.toISOString().split('T')[0];
+    const formattedDate = this.selectedDate.toLocaleString('sv').split('T')[0];
     this.apiService.getEventsForDate(formattedDate).subscribe({
       next: (response) => {
         this.events = response.sort(
@@ -78,20 +88,8 @@ export class CalendarComponent implements OnInit {
     });
   }
 
-  getCourseName(courseId: number) {
-    if (!courseId) {
-      return 'No course';
-    }
-    let courseName = '';
-    const course = this.apiService.getCourseById(courseId).subscribe({
-      next: (course) => {
-        courseName = course.name;
-        console.log('Course name:', courseName);
-      },
-      error: (error) => {
-        console.error('Error loading course:', error);
-      },
-    });
-    return courseName;
+  getCourseName(courseId: number): string {
+    const course = this.courses.find((c) => c.id === courseId);
+    return course?.name || 'Unknown Course';
   }
 }

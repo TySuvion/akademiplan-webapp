@@ -165,11 +165,21 @@ export class ApiService {
     );
   }
 
-  updateEvent(event: CalendarEvent): Observable<CalendarEvent> {
-    return this.http.patch<CalendarEvent>(
-      `${this.baseUrl}/events/${event.id}`,
-      event
-    );
+  updateEvent(
+    eventId: number,
+    name: string,
+    description: string,
+    start: Date,
+    end: Date,
+    courseId?: number | null
+  ): Observable<CalendarEvent> {
+    return this.http.patch<CalendarEvent>(`${this.baseUrl}/events/${eventId}`, {
+      name: name,
+      description: description,
+      start: start.toISOString(),
+      end: end.toISOString(),
+      courseId: courseId,
+    });
   }
 
   deleteEvent(eventId: number): Observable<void> {

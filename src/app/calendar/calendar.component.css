@@ -7,13 +7,14 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  padding-left: 5%;
 }
 
 .event-card {
   margin-bottom: 16px;
 }
 
-.event-time {
-  font-size: 0.9rem;
-  color: gray;
+mat-card-subtitle {
+  font-size: 0.9em;
+  color: #e299d7;
 }
