@@ -29,6 +29,8 @@ export class HomeComponent {
   username: string = '';
   helloMessage: string = '';
   courses: string[] = [];
+  showCourse: boolean = false;
+  showCalendar: boolean = true;
 
   constructor(private apiService: ApiService, private router: Router) {}
 
@@ -59,5 +61,15 @@ export class HomeComponent {
   goToProfile() {
     console.log('Go to Profile');
     this.router.navigate(['/profile']);
+  }
+
+  showCoursesView() {
+    this.showCourse = true;
+    this.showCalendar = false;
+  }
+
+  showCalendarView() {
+    this.showCourse = false;
+    this.showCalendar = true;
   }
 }

@@ -1,6 +1,8 @@
 <mat-toolbar color="primary" class="navbar">
   <span>AkademiPlan</span>
   <span class="spacer"></span>
+  <button mat-button (click)="showCoursesView()">Kurse</button>
+  <button mat-button (click)="showCalendarView()">Planner</button>
   <button mat-button (click)="goToProfile()">Profile</button>
   <button mat-button (click)="logout()">Logout</button>
 </mat-toolbar>
@@ -10,7 +12,11 @@
     <mat-card-title>{{ helloMessage }} {{ username }}!</mat-card-title>
   </mat-card>
 
-  <div class="right-section">
+  <div *ngIf="this.showCalendar" class="courses-container">
     <app-calendar></app-calendar>
+  </div>
+
+  <div *ngIf="this.showCourse" class="courses-container">
+    <app-courses></app-courses>
   </div>
 </div>
