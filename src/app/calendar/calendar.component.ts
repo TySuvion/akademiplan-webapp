@@ -59,6 +59,12 @@ export class CalendarComponent implements OnInit {
     this.loadEvents();
   }
 
+  jumpToToday() {
+    this.selectedDate = new Date();
+    this.selectedDateSignal.set(this.selectedDate);
+    this.loadEvents();
+  }
+
   openEventDialog() {
     const dialogRef = this.dialog.open(EventDialogComponent, {
       width: '400px',

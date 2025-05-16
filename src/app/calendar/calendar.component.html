@@ -6,10 +6,14 @@
       >
       <div class="calendar-actions">
         <button mat-raised-button (click)="changeDay(-1)">
-          <mat-icon>chevron_left</mat-icon> Vorheriger Tag
+          <mat-icon>chevron_left</mat-icon>
         </button>
         <button mat-raised-button color="primary" (click)="changeDay(1)">
-          Nächster Tag <mat-icon>chevron_right</mat-icon>
+          <mat-icon>chevron_right</mat-icon>
+        </button>
+        <button mat-raised-button color="primary" (click)="jumpToToday()">
+          <mat-icon>today</mat-icon>
+          Heute
         </button>
         <button mat-raised-button color="accent" (click)="openEventDialog()">
           Neues Event
