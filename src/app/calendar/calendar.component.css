@@ -11,7 +11,8 @@
 }
 
 .event-card {
-  margin-bottom: 16px;
+  margin-bottom: 8px;
+  margin-top: 8px;
 }
 
 mat-card-subtitle {
