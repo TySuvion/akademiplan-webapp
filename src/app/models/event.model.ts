@@ -1,3 +1,5 @@
+import { Course } from './course.model';
+
 export interface CalendarEvent {
   id: number;
   name: string;
@@ -6,4 +8,6 @@ export interface CalendarEvent {
   end: Date;
   courseId: number;
   userId: number;
+  course?: Course;
+  type?: string;
 }

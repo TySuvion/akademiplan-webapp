@@ -10,3 +10,13 @@
     )
   );
 }
+
+.studyblock {
+  @include mat.card-overrides(
+    (
+      subtitle-text-color: orange,
+      outlined-outline-color: rgb(92, 92, 92),
+      outlined-container-color: rgb(22, 23, 31),
+    )
+  );
+}

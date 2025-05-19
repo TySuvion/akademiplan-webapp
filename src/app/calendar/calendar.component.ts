@@ -98,4 +98,9 @@ export class CalendarComponent implements OnInit {
     const course = this.courses.find((c) => c.id === courseId);
     return course?.name || 'Unknown Course';
   }
+
+  startStudyBlock() {
+    console.log('Study block started');
+    //TODO: implement study block logic
+  }
 }
