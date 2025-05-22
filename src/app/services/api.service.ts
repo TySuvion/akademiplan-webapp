@@ -2,14 +2,18 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Course } from '../models/course.model';
-import { CalendarEvent } from '../models/event.model';
+import { CalendarEvent, StudyBlock } from '../models/event.model';
+import { StudyblockService } from './studyblock.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
   private baseUrl = 'http://localhost:3000';
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private studyblockService: StudyblockService
+  ) {}
 
   signUp(username: string, password: string): Observable<any> {
     return this.http.post(
@@ -142,6 +146,7 @@ export class ApiService {
   }
 
   createEvent(
+    type: string,
     name: string,
     description: string,
     start: Date,
@@ -149,30 +154,65 @@ export class ApiService {
     courseId?: number | null
   ): Observable<CalendarEvent> {
     const uId = this.getUserIdFromToken();
-    return this.http.post<CalendarEvent>(
-      `${this.baseUrl}/events`,
-      {
-        name: name,
-        description: description,
-        start: start.toISOString(),
-        end: end.toISOString(),
-        courseId: courseId,
-        userId: uId,
-      },
-      {
-        headers: { Authorization: `Bearer ${this.getToken()}` },
-      }
+    const plannedSessions = this.studyblockService.calculatePlannedSessions(
+      start,
+      end
     );
+    if (type == 'STUDY_BLOCK') {
+      return this.http.post<CalendarEvent>(
+        `${this.baseUrl}/events/studyblock`,
+        {
+          name: name,
+          description: description,
+          start: start.toISOString(),
+          end: end.toISOString(),
+          courseId: courseId,
+          userId: uId,
+          plannedSessions: plannedSessions,
+          completedSessions: 0,
+        }
+      );
+    }
+    return this.http.post<CalendarEvent>(`${this.baseUrl}/events`, {
+      name: name,
+      description: description,
+      start: start.toISOString(),
+      end: end.toISOString(),
+      courseId: courseId,
+      userId: uId,
+    });
   }
 
   updateEvent(
+    type: string,
     eventId: number,
     name: string,
     description: string,
     start: Date,
     end: Date,
-    courseId?: number | null
+    courseId?: number | null,
+    studyBlock?: StudyBlock | null
   ): Observable<CalendarEvent> {
+    if (type == 'STUDY_BLOCK') {
+      const plannedSessions = this.studyblockService.calculatePlannedSessions(
+        start,
+        end
+      );
+      const completedSessions = studyBlock?.completedSessions || 0;
+
+      return this.http.patch<CalendarEvent>(
+        `${this.baseUrl}/events/studyblock/${eventId}`,
+        {
+          name: name,
+          description: description,
+          start: start.toISOString(),
+          end: end.toISOString(),
+          courseId: courseId,
+          plannedSessions: plannedSessions,
+          completedSessions: completedSessions,
+        }
+      );
+    }
     return this.http.patch<CalendarEvent>(`${this.baseUrl}/events/${eventId}`, {
       name: name,
       description: description,

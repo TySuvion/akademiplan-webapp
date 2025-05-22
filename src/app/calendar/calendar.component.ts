@@ -99,8 +99,5 @@ export class CalendarComponent implements OnInit {
     return course?.name || 'Unknown Course';
   }
 
-  startStudyBlock() {
-    console.log('Study block started');
-    //TODO: implement study block logic
-  }
+  startStudyBlock(eventId: number) {}
 }

@@ -21,6 +21,7 @@ import { CalendarEvent } from '../models/event.model';
 import { CoursesComponent } from '../courses/courses.component';
 import { Course } from '../models/course.model';
 import { MatSelectModule } from '@angular/material/select';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-event-dialog',
@@ -36,6 +37,7 @@ import { MatSelectModule } from '@angular/material/select';
     MatIconModule,
     MatDialogModule,
     MatSelectModule,
+    MatCheckboxModule,
   ],
 })
 export class EventDialogComponent {
@@ -49,6 +51,7 @@ export class EventDialogComponent {
     private apiService: ApiService
   ) {
     this.eventForm = this.formBuilder.group({
+      type: [data.event?.type || 'CALENDAR_EVENT'],
       name: [data.event?.name || '', Validators.required],
       description: [data.event?.description || ''],
       course: [data.event?.courseId || null],
@@ -75,16 +78,21 @@ export class EventDialogComponent {
       const name = event.name.trim();
       const description = event.description.trim();
       const courseId = event.course;
+      const type = event.type;
+      const studyBlock = event.studyBlock;
       const request = this.data.event
         ? this.apiService.updateEvent(
+            type,
             event.id,
             name,
             description,
             startDate,
             endDate,
-            courseId
+            courseId,
+            studyBlock
           )
         : this.apiService.createEvent(
+            type,
             name,
             description,
             startDate,

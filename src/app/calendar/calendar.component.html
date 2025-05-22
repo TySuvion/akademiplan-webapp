@@ -34,6 +34,12 @@
             <mat-card-title
               ><mat-icon>play_lesson</mat-icon> {{ event.name }}</mat-card-title
             >
+            <span class="spacer">
+              Sessions: {{ event.studyBlock?.completedSessions }}/{{
+                event.studyBlock?.plannedSessions
+              }}</span
+            >
+
             <mat-card-subtitle>
               {{ event.start | date : "HH:mm" }} -
               {{ event.end | date : "HH:mm" }}
@@ -42,6 +48,13 @@
           <mat-card-content>
             <p>{{ event.description }}</p>
             <p *ngIf="event.courseId != null">Kurs: {{ event.course?.name }}</p>
+            <p>
+              Geplante Lernsessions: {{ event.studyBlock?.plannedSessions }}
+            </p>
+            <p>
+              Durchgeführte Lernsessions:
+              {{ event.studyBlock?.completedSessions }}
+            </p>
           </mat-card-content>
           <mat-card-actions>
             <button mat-icon-button color="primary" (click)="editEvent(event)">
@@ -56,7 +69,7 @@
             </button>
             <span class="spacer"></span>
             Lernblock durchführen
-            <button mat-icon-button (click)="startStudyBlock()">
+            <button mat-icon-button (click)="startStudyBlock(event.id)">
               <mat-icon>timer</mat-icon>
             </button>
           </mat-card-actions>

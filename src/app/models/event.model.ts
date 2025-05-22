@@ -10,6 +10,12 @@ export interface CalendarEvent {
   userId: number;
   course?: Course;
   type?: string;
-  plannedSessions?: number;
-  completedSessions?: number;
+  studyBlock?: StudyBlock;
+}
+
+export interface StudyBlock {
+  id: number;
+  eventId: number;
+  plannedSessions: number;
+  completedSessions: number;
 }
