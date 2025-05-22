@@ -10,4 +10,6 @@ export interface CalendarEvent {
   userId: number;
   course?: Course;
   type?: string;
+  plannedSessions?: number;
+  completedSessions?: number;
 }
