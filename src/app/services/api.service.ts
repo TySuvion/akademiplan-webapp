@@ -225,4 +225,15 @@ export class ApiService {
   deleteEvent(eventId: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/events/${eventId}`);
   }
+
+  completeStudySession(event: CalendarEvent): Observable<CalendarEvent> {
+    console.log(event);
+    if (!event.studyBlock) {
+      throw new Error('Event does not have a study block associated with it.');
+    }
+    return this.http.patch<CalendarEvent>(
+      `${this.baseUrl}/events/studyblock/${event.id}`,
+      { completedSessions: event.studyBlock?.completedSessions + 1 }
+    );
+  }
 }

@@ -99,5 +99,10 @@ export class CalendarComponent implements OnInit {
     return course?.name || 'Unknown Course';
   }
 
-  startStudyBlock(eventId: number) {}
+  startStudyBlock(event: CalendarEvent) {
+    this.apiService.completeStudySession(event).subscribe({
+      next: () => this.loadEvents(),
+      error: (error) => console.error('Error completing study session:', error),
+    });
+  }
 }
