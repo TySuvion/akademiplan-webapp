@@ -79,7 +79,7 @@ export class EventDialogComponent {
       const description = event.description.trim();
       const courseId = event.course;
       const type = event.type;
-      const studyBlock = event.studyBlock;
+      const completedSessions = this.data.event?.studyBlock?.completedSessions;
       const request = this.data.event
         ? this.apiService.updateEvent(
             type,
@@ -89,7 +89,7 @@ export class EventDialogComponent {
             startDate,
             endDate,
             courseId,
-            studyBlock
+            completedSessions
           )
         : this.apiService.createEvent(
             type,

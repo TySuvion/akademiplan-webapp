@@ -34,11 +34,11 @@
             <mat-card-title
               ><mat-icon>play_lesson</mat-icon> {{ event.name }}</mat-card-title
             >
-            <span class="spacer">
-              Sessions: {{ event.studyBlock?.completedSessions }}/{{
+            <div class="session-status">
+              {{ event.studyBlock?.completedSessions }}/{{
                 event.studyBlock?.plannedSessions
-              }}</span
-            >
+              }}
+            </div>
 
             <mat-card-subtitle>
               {{ event.start | date : "HH:mm" }} -

@@ -191,14 +191,13 @@ export class ApiService {
     start: Date,
     end: Date,
     courseId?: number | null,
-    studyBlock?: StudyBlock | null
+    completedSessions?: number | null
   ): Observable<CalendarEvent> {
     if (type == 'STUDY_BLOCK') {
       const plannedSessions = this.studyblockService.calculatePlannedSessions(
         start,
         end
       );
-      const completedSessions = studyBlock?.completedSessions || 0;
 
       return this.http.patch<CalendarEvent>(
         `${this.baseUrl}/events/studyblock/${eventId}`,
@@ -233,7 +232,10 @@ export class ApiService {
     }
     return this.http.patch<CalendarEvent>(
       `${this.baseUrl}/events/studyblock/${event.id}`,
-      { completedSessions: event.studyBlock?.completedSessions + 1 }
+      {
+        plannedSessions: event.studyBlock.plannedSessions, // Keep planned sessions the same
+        completedSessions: event.studyBlock?.completedSessions + 1,
+      }
     );
   }
 }

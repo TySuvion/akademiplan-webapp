@@ -17,5 +17,20 @@
 
 mat-card-subtitle {
   font-size: 0.9em;
-  color: #e299d7;
+  color: #ffabf3;
+}
+
+.session-status {
+  border-radius: 5px;
+  border: #ffabf3 1px solid;
+  color: #ffabf3;
+  font-size: 2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 5px;
+  font-weight: bold;
 }
