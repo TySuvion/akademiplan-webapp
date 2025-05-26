@@ -8,12 +8,21 @@
 </mat-toolbar>
 
 <div class="home-container">
-  <mat-card class="home-title-card">
+  <mat-card *ngIf="this.showCalendar" class="home-title-card">
     <mat-card-title>{{ helloMessage }} {{ username }}!</mat-card-title>
   </mat-card>
 
+  <div *ngIf="this.showStudySession">
+    <app-studysession
+      [studyBlockEvent]="activeStudyBlock!"
+      (studyBlockEnded)="endStudyBlock()"
+    ></app-studysession>
+  </div>
+
   <div *ngIf="this.showCalendar" class="courses-container">
-    <app-calendar></app-calendar>
+    <app-calendar
+      (studyBlockStarted)="startStudySession($event)"
+    ></app-calendar>
   </div>
 
   <div *ngIf="this.showCourse" class="courses-container">

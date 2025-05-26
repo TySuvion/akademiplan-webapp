@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CalendarEvent } from '../models/event.model';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -27,14 +27,20 @@ export class StudysessionComponent {
       completedSessions: 0,
     },
   };
+  @Output() sessionCompleted = new EventEmitter<void>();
+  @Output() studyBlockEnded = new EventEmitter<void>();
 
   startTimer() {}
 
   stopTimer() {}
 
-  stopStudying() {}
+  stopStudying() {
+    this.studyBlockEnded.emit();
+  }
 
-  completedStudySession() {}
+  completedStudySession() {
+    //TODO Updated Session count.
+  }
 
   getCurrentSession() {
     if (!this.studyBlockEvent.studyBlock) {

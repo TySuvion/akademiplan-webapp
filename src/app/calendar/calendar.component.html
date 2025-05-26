@@ -48,13 +48,6 @@
           <mat-card-content>
             <p>{{ event.description }}</p>
             <p *ngIf="event.courseId != null">Kurs: {{ event.course?.name }}</p>
-            <p>
-              Geplante Lernsessions: {{ event.studyBlock?.plannedSessions }}
-            </p>
-            <p>
-              Durchgeführte Lernsessions:
-              {{ event.studyBlock?.completedSessions }}
-            </p>
           </mat-card-content>
           <mat-card-actions>
             <button mat-icon-button color="primary" (click)="editEvent(event)">

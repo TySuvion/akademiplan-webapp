@@ -20,3 +20,12 @@
     )
   );
 }
+
+.timer {
+  @include mat.card-overrides(
+    (
+      container-color: rgb(54, 41, 54),
+      outline-color: rgb(219, 219, 219),
+    )
+  );
+}

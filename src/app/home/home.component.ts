@@ -10,6 +10,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { CalendarComponent } from '../calendar/calendar.component';
+import { CalendarEvent } from '../models/event.model';
+import { StudysessionComponent } from '../studysession/studysession.component';
 
 @Component({
   selector: 'app-home',
@@ -21,6 +23,7 @@ import { CalendarComponent } from '../calendar/calendar.component';
     MatCardModule,
     CoursesComponent,
     CalendarComponent,
+    StudysessionComponent,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
@@ -29,8 +32,10 @@ export class HomeComponent {
   username: string = '';
   helloMessage: string = '';
   courses: string[] = [];
+  activeStudyBlock: CalendarEvent | null = null;
   showCourse: boolean = false;
   showCalendar: boolean = true;
+  showStudySession: boolean = false;
 
   constructor(private apiService: ApiService, private router: Router) {}
 
@@ -72,4 +77,19 @@ export class HomeComponent {
     this.showCourse = false;
     this.showCalendar = true;
   }
+
+  startStudySession(event: CalendarEvent) {
+    this.activeStudyBlock = event;
+    this.showCourse = false;
+    this.showCalendar = false;
+    this.showStudySession = true;
+  }
+
+  endStudyBlock() {
+    this.activeStudyBlock = null;
+    this.showStudySession = false;
+    this.showCalendar = true;
+  }
+
+  sessionCompleted() {}
 }

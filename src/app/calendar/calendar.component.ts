@@ -1,4 +1,11 @@
-import { Component, OnInit, signal, WritableSignal } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  OnInit,
+  Output,
+  signal,
+  WritableSignal,
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ApiService } from '../services/api.service';
 import { CalendarEvent } from '../models/event.model';
@@ -18,6 +25,7 @@ import { Course } from '../models/course.model';
 export class CalendarComponent implements OnInit {
   selectedDate: Date = new Date();
   selectedDateSignal: WritableSignal<Date> = signal(this.selectedDate);
+  @Output() studyBlockStarted = new EventEmitter<CalendarEvent>();
 
   events: CalendarEvent[] = [];
   courses: Course[] = [];
@@ -100,6 +108,10 @@ export class CalendarComponent implements OnInit {
   }
 
   startStudyBlock(event: CalendarEvent) {
+    this.studyBlockStarted.emit(event);
+  }
+
+  completeStudySession(event: CalendarEvent) {
     this.apiService.completeStudySession(event).subscribe({
       next: () => this.loadEvents(),
       error: (error) => console.error('Error completing study session:', error),
