@@ -53,3 +53,10 @@ mat-card-header {
   align-items: center;
   padding: 5%;
 }
+
+mat-card-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5%;
+}
