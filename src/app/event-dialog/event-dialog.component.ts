@@ -63,6 +63,10 @@ export class EventDialogComponent {
         this.getRelevantDateInput(data.event?.end) || '',
         Validators.required,
       ],
+      done: [
+        data.event?.studyBlock?.completedSessions >=
+          data.event.studyBlock.plannedSessions || false,
+      ],
     });
 
     this.apiService
@@ -79,7 +83,11 @@ export class EventDialogComponent {
       const description = event.description.trim();
       const courseId = event.course;
       const type = event.type;
-      const completedSessions = this.data.event?.studyBlock?.completedSessions;
+
+      let completedSessions = this.data.event?.studyBlock?.completedSessions;
+      if (event.done) {
+        completedSessions = this.data.event?.studyBlock?.plannedSessions;
+      }
       const request = this.data.event
         ? this.apiService.updateEvent(
             type,
