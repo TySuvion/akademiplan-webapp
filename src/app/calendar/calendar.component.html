@@ -46,7 +46,9 @@
             </mat-card-subtitle>
           </mat-card-header>
           <mat-card-content>
-            <p>{{ event.description }}</p>
+            <p class="description">
+              <markdown>{{ event.description }}</markdown>
+            </p>
             <p *ngIf="event.courseId != null">Kurs: {{ event.course?.name }}</p>
           </mat-card-content>
           <mat-card-actions>
@@ -81,7 +83,9 @@
             </mat-card-subtitle>
           </mat-card-header>
           <mat-card-content>
-            <p>{{ event.description }}</p>
+            <p class="description">
+              <markdown>{{ event.description }}</markdown>
+            </p>
             <p *ngIf="event.courseId != null">Kurs: {{ event.course?.name }}</p>
           </mat-card-content>
           <mat-card-actions>

@@ -34,3 +34,24 @@ mat-card-subtitle {
   padding: 5px;
   font-weight: bold;
 }
+
+.description ::ng-deep {
+  font-size: 0.9em;
+  color: #979797;
+  margin-top: 4px;
+
+  .task-list-item {
+    list-style-type: none;
+    margin-left: -20px;
+  }
+
+  .task-list-item-checkbox {
+    margin-right: 8px;
+    cursor: pointer;
+  }
+
+  /* Remove default list styling for task lists */
+  .contains-task-list {
+    padding-left: 0;
+  }
+}

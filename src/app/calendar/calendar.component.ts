@@ -15,12 +15,19 @@ import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { Course } from '../models/course.model';
+import { MarkdownModule } from 'ngx-markdown';
 
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.css'],
-  imports: [MatCardModule, CommonModule, MatIconModule, MatButtonModule],
+  imports: [
+    MatCardModule,
+    CommonModule,
+    MatIconModule,
+    MatButtonModule,
+    MarkdownModule,
+  ],
 })
 export class CalendarComponent implements OnInit {
   selectedDate: Date = new Date();
