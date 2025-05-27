@@ -3,6 +3,8 @@ import { CalendarEvent } from '../models/event.model';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { StudyblockService } from '../services/studyblock.service';
+import { ApiService } from '../services/api.service';
 
 @Component({
   selector: 'app-studysession',
@@ -34,13 +36,46 @@ export class StudysessionComponent {
   timeLeft: number = 25;
   isRunning: boolean = false;
   displayTime: string = '25:00';
+  timerState: TimerState = TimerState.STUDY;
+
+  constructor(private apiService: ApiService) {}
 
   stopStudying() {
     this.studyBlockEnded.emit();
   }
 
   completedStudySession() {
-    //TODO Updated Session count.
+    if (this.isStudyBlockCompleted()) {
+      this.studyBlockEnded.emit();
+      return;
+    }
+    if (this.timerState == TimerState.STUDY) {
+      this.apiService.completeStudySession(this.studyBlockEvent).subscribe({
+        next: (response) => {
+          this.studyBlockEvent.studyBlock!.completedSessions++;
+          this.sessionCompleted.emit(this.studyBlockEvent);
+          this.stopTimerAndReset();
+          this.timerState = TimerState.BREAK;
+          this.startTimer(5); // Start a 5-minute break timer
+        },
+        error: (error) => {
+          console.error('Error completing study session:', error);
+          // Handle error appropriately, e.g., show a notification
+        },
+      });
+    }
+    if (this.timerState == TimerState.BREAK) {
+      this.stopTimerAndReset();
+      this.timerState = TimerState.STUDY;
+      this.startTimer(25); // Start a 25-minute study timer
+    }
+  }
+
+  isStudyBlockCompleted(): boolean {
+    return (
+      this.studyBlockEvent.studyBlock?.completedSessions! >=
+      this.studyBlockEvent.studyBlock?.plannedSessions!
+    );
   }
 
   getCurrentSession() {
@@ -99,12 +134,17 @@ export class StudysessionComponent {
   }
 
   private timerComplete() {
-    this.pauseTimer();
-    this.sessionCompleted.emit();
+    this.stopTimerAndReset();
+    this.sessionCompleted.emit(this.studyBlockEvent);
     // You might want to play a sound or show a notification here
   }
 
   ngOnDestroy() {
     this.pauseTimer();
   }
+}
+
+enum TimerState {
+  STUDY = 'STUDY',
+  BREAK = 'BREAK',
 }

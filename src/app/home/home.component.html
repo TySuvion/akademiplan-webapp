@@ -16,6 +16,7 @@
     <app-studysession
       [studyBlockEvent]="activeStudyBlock!"
       (studyBlockEnded)="endStudyBlock()"
+      (sessionCompleted)="sessionCompleted($event)"
     ></app-studysession>
   </div>
 

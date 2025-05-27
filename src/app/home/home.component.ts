@@ -91,5 +91,5 @@ export class HomeComponent {
     this.showCalendar = true;
   }
 
-  sessionCompleted() {}
+  sessionCompleted(studyBlock: CalendarEvent) {}
 }
