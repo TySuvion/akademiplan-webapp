@@ -45,15 +45,15 @@ export class StudysessionComponent {
   }
 
   completedStudySession() {
-    if (this.isStudyBlockCompleted()) {
-      this.studyBlockEnded.emit();
-      return;
-    }
     if (this.timerState == TimerState.STUDY) {
       this.apiService.completeStudySession(this.studyBlockEvent).subscribe({
         next: (response) => {
           this.studyBlockEvent.studyBlock!.completedSessions++;
           this.sessionCompleted.emit(this.studyBlockEvent);
+          if (this.isStudyBlockCompleted()) {
+            this.studyBlockEnded.emit();
+            return;
+          }
           this.stopTimerAndReset();
           this.timerState = TimerState.BREAK;
           this.startTimer(5); // Start a 5-minute break timer
