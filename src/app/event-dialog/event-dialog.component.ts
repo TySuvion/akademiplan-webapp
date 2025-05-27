@@ -63,15 +63,24 @@ export class EventDialogComponent {
         this.getRelevantDateInput(data.event?.end) || '',
         Validators.required,
       ],
-      done: [
-        data.event?.studyBlock?.completedSessions >=
-          data.event.studyBlock.plannedSessions || false,
-      ],
+      done: [this.isStudyblockAndCompleted(data.event) || false],
     });
 
     this.apiService
       .loadCourses()
       .subscribe((courses) => (this.courses = courses));
+  }
+
+  isStudyblockAndCompleted(event: CalendarEvent): boolean {
+    if (!event || !event.studyBlock) {
+      return false;
+    }
+    if (
+      event.studyBlock.completedSessions >= event.studyBlock.plannedSessions
+    ) {
+      return true;
+    }
+    return false;
   }
 
   onSubmit() {
