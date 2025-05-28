@@ -6,6 +6,11 @@
         >Session {{ getCurrentSession() }} of
         {{ studyBlockEvent.studyBlock?.plannedSessions }}</mat-card-title
       >
+      <mat-card-subtitle
+        ><markdown>{{
+          studyBlockEvent.description
+        }}</markdown></mat-card-subtitle
+      >
     </mat-card-header>
     <mat-card-content class="time"> {{ displayTime }} </mat-card-content>
     <mat-card-actions>

@@ -5,10 +5,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { StudyblockService } from '../services/studyblock.service';
 import { ApiService } from '../services/api.service';
+import { MarkdownModule } from 'ngx-markdown';
 
 @Component({
   selector: 'app-studysession',
-  imports: [MatCardModule, MatButtonModule, MatIconModule],
+  imports: [MatCardModule, MatButtonModule, MatIconModule, MarkdownModule],
   templateUrl: './studysession.component.html',
   styleUrl: './studysession.component.css',
 })
