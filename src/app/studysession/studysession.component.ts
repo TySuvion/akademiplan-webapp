@@ -50,10 +50,6 @@ export class StudysessionComponent {
         next: (response) => {
           this.studyBlockEvent.studyBlock!.completedSessions++;
           this.sessionCompleted.emit(this.studyBlockEvent);
-          if (this.isStudyBlockCompleted()) {
-            this.studyBlockEnded.emit();
-            return;
-          }
           this.stopTimerAndReset();
           this.timerState = TimerState.BREAK;
           this.startTimer(5); // Start a 5-minute break timer
@@ -68,6 +64,10 @@ export class StudysessionComponent {
       this.stopTimerAndReset();
       this.timerState = TimerState.STUDY;
       this.startTimer(25); // Start a 25-minute study timer
+    }
+    if (this.isStudyBlockCompleted()) {
+      this.studyBlockEnded.emit();
+      return;
     }
   }
 
