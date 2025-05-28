@@ -71,14 +71,16 @@ export class HomeComponent {
   showCoursesView() {
     this.showCourse = true;
     this.showCalendar = false;
+    this.showStudySession = false;
   }
 
   showCalendarView() {
     this.showCourse = false;
     this.showCalendar = true;
+    this.showStudySession = false;
   }
 
-  startStudySession(event: CalendarEvent) {
+  startStudyBlock(event: CalendarEvent) {
     this.activeStudyBlock = event;
     this.showCourse = false;
     this.showCalendar = false;

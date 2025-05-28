@@ -21,9 +21,7 @@
   </div>
 
   <div *ngIf="this.showCalendar" class="courses-container">
-    <app-calendar
-      (studyBlockStarted)="startStudySession($event)"
-    ></app-calendar>
+    <app-calendar (studyBlockStarted)="startStudyBlock($event)"></app-calendar>
   </div>
 
   <div *ngIf="this.showCourse" class="courses-container">
