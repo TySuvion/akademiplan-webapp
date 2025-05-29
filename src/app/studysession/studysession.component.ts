@@ -6,10 +6,19 @@ import { MatIconModule } from '@angular/material/icon';
 import { StudyblockService } from '../services/studyblock.service';
 import { ApiService } from '../services/api.service';
 import { MarkdownModule } from 'ngx-markdown';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { ContinueStudyDialogComponent } from './continue-study-dialog/continue-study-dialog.component';
 
 @Component({
   selector: 'app-studysession',
-  imports: [MatCardModule, MatButtonModule, MatIconModule, MarkdownModule],
+  imports: [
+    MatCardModule,
+    MatButtonModule,
+    MatIconModule,
+    MarkdownModule,
+    ContinueStudyDialogComponent,
+    MatDialogModule,
+  ],
   templateUrl: './studysession.component.html',
   styleUrl: './studysession.component.css',
 })
@@ -39,13 +48,25 @@ export class StudysessionComponent {
   displayTime: string = '25:00';
   timerState: TimerState = TimerState.STUDY;
 
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService, private dialog: MatDialog) {}
 
   stopStudying() {
     this.studyBlockEnded.emit();
   }
 
-  completedStudySession() {
+  continueStudyingDialogOpen(): Promise<boolean> {
+    return new Promise((resolve) => {
+      const dialogRef = this.dialog.open(ContinueStudyDialogComponent, {
+        width: '300px',
+      });
+
+      dialogRef.afterClosed().subscribe((result) => {
+        resolve(!!result);
+      });
+    });
+  }
+
+  async completedStudySession() {
     if (this.timerState == TimerState.STUDY) {
       this.apiService.completeStudySession(this.studyBlockEvent).subscribe({
         next: (response) => {
@@ -67,8 +88,14 @@ export class StudysessionComponent {
       this.startTimer(25); // Start a 25-minute study timer
     }
     if (this.isStudyBlockCompleted()) {
-      this.studyBlockEnded.emit();
-      return;
+      const shouldContinue = await this.continueStudyingDialogOpen();
+      console.log(shouldContinue);
+      if (shouldContinue) {
+        return;
+      } else {
+        this.stopStudying();
+        return;
+      }
     }
   }
 
