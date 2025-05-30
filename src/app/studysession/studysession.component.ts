@@ -131,8 +131,10 @@ export class StudysessionComponent {
       if (this.timeLeft > 0) {
         this.timeLeft--;
         this.updateDisplayTime();
+        console.log('Timer still running: ', this.timeLeft);
       } else {
-        this.timerComplete();
+        console.log('Timer completed');
+        this.completedStudySession();
       }
     }, 1000);
   }
