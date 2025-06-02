@@ -86,7 +86,10 @@
             <p class="description">
               <markdown>{{ event.description }}</markdown>
             </p>
-            <p *ngIf="event.courseId != null">Kurs: {{ event.course?.name }}</p>
+            <p *ngIf="event.courseId != null">
+              Kurs: {{ event.course?.name }}
+              <app-weekly-goals [course]="event.course!"></app-weekly-goals>
+            </p>
           </mat-card-content>
           <mat-card-actions>
             <button mat-icon-button color="primary" (click)="editEvent(event)">

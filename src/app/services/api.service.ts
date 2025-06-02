@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Course } from '../models/course.model';
+import { Course, WeeklyGoal } from '../models/course.model';
 import { CalendarEvent, StudyBlock } from '../models/event.model';
 import { StudyblockService } from './studyblock.service';
 
@@ -236,6 +236,13 @@ export class ApiService {
         plannedSessions: event.studyBlock.plannedSessions, // Keep planned sessions the same
         completedSessions: event.studyBlock?.completedSessions + 1,
       }
+    );
+  }
+
+  updateGoalProgress(goal: WeeklyGoal): Observable<WeeklyGoal> {
+    return this.http.patch<WeeklyGoal>(
+      `${this.baseUrl}/courses/weeklygoal/${goal.id}`,
+      {} //progress updates automatically in backend
     );
   }
 }

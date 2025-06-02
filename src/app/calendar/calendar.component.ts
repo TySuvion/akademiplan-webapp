@@ -16,6 +16,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { Course } from '../models/course.model';
 import { MarkdownModule } from 'ngx-markdown';
+import { WeeklyGoalsComponent } from '../weekly-goals/weekly-goals.component';
 
 @Component({
   selector: 'app-calendar',
@@ -27,6 +28,7 @@ import { MarkdownModule } from 'ngx-markdown';
     MatIconModule,
     MatButtonModule,
     MarkdownModule,
+    WeeklyGoalsComponent,
   ],
 })
 export class CalendarComponent implements OnInit {
