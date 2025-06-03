@@ -17,7 +17,7 @@ import { MatFormField, MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { ApiService } from '../../services/api.service';
-import { WeeklyGoal } from '../../models/course.model';
+import { Course, WeeklyGoal } from '../../models/course.model';
 
 @Component({
   selector: 'app-course-dialog',
@@ -37,32 +37,59 @@ import { WeeklyGoal } from '../../models/course.model';
 export class CourseDialogComponent {
   courseForm: FormGroup;
 
+  isEditMode: boolean = false;
+
   constructor(
     private dialogRef: MatDialogRef<CourseDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private formBuilder: FormBuilder,
     private apiService: ApiService
   ) {
+    this.isEditMode = !!data?.course;
     this.courseForm = this.formBuilder.group({
-      name: [data.course?.name || 'Neuer Kurs', Validators.required],
-      addWeekyGoal: [this.hasCurrentWeeklyGoal()],
-      plannedSessions: [data.course?.plannedSessions || 0],
+      name: [
+        this.isEditMode ? data.course.name : 'Neuer Kurs',
+        Validators.required,
+      ],
+      addWeekyGoal: [false],
+      plannedSessions: [0],
     });
+
+    if (this.isEditMode) {
+      this.courseForm.patchValue({
+        addWeekyGoal: this.hasCurrentWeeklyGoal(),
+        plannedSessions: this.getCurrentWeeksPlannedSessions(data.course),
+      });
+    }
+  }
+
+  getCurrentWeeksPlannedSessions(course: Course): number {
+    if (!this.data?.course?.weeklyGoals) {
+      return 0;
+    }
+
+    const currentWeekGoal = this.data?.course.weeklyGoals.find(
+      (goal: WeeklyGoal) => this.goalIsInCurrentWeek(goal)
+    );
+
+    return currentWeekGoal?.goalSessions || 0;
   }
 
   hasCurrentWeeklyGoal(): boolean {
-    if (this.data.course?.weeklyGoals) {
-      const today = new Date();
+    return (
+      this.data?.course?.weeklyGoals?.some((goal: WeeklyGoal) =>
+        this.goalIsInCurrentWeek(goal)
+      ) ?? false
+    );
+  }
 
-      this.data.course.weeklyGoals.forEach((goal: WeeklyGoal) => {
-        const weekStart = new Date(goal.weekStart);
-        const weekEnd = new Date(goal.weekEnd);
-        if (today >= weekStart && today <= weekEnd) {
-          return true;
-        }
-      });
-    }
-    return false;
+  goalIsInCurrentWeek(goal: WeeklyGoal): boolean {
+    const today = new Date();
+    const weekStart = new Date(goal.weekStart);
+    const weekEnd = new Date(goal.weekEnd);
+    if (today >= weekStart && today <= weekEnd) {
+      return true;
+    } else return false;
   }
 
   onSubmit() {
@@ -71,21 +98,20 @@ export class CourseDialogComponent {
         ...this.courseForm.value,
       };
 
-      let id = this.data.course?.id;
+      let id = this.data?.course?.id;
 
       const name = courseFormResults.name.trim();
-      const request = this.data.course
-        ? this.apiService.updateCourse(this.data.course.id, name)
-        : this.apiService.createCourse(name);
+      const request = this.data?.course
+        ? this.apiService.updateCourse(
+            id,
+            name,
+            courseFormResults.plannedSessions
+          )
+        : this.apiService.createCourse(name, courseFormResults.plannedSessions);
 
       request.subscribe({
-        next: (course) => {
-          id = course.id;
-          if (courseFormResults.addWeeklyGoal) {
-            //TODO continue here.
-          }
-        },
-        error: (error) => console.error('Error saving event: ', error),
+        next: () => this.dialogRef.close(true),
+        error: (error) => console.error('Error saving course: ', error),
       });
     }
   }

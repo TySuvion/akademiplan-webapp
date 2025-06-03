@@ -12,7 +12,7 @@
             <button
               mat-icon-button
               color="primary"
-              (click)="editCourse(course.id)"
+              (click)="openEditCourseDialog(course)"
             >
               <mat-icon>edit</mat-icon>
             </button>
@@ -28,39 +28,9 @@
       </ul>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-raised-button color="primary" (click)="openCourseForm()">
+      <button mat-raised-button color="primary" (click)="openAddCourseDialog()">
         Kurs hinzufügen
       </button>
     </mat-card-actions>
   </mat-card>
-
-  <!-- Course Form Popup -->
-  <div class="course-form-popup" *ngIf="showCourseForm">
-    <form [formGroup]="courseForm" (ngSubmit)="addCourseAndReload()">
-      <h3>Neuen Kurs hinzufügen</h3>
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Kurs Name</mat-label>
-        <input matInput type="text" formControlName="courseName" />
-        <mat-error *ngIf="courseForm.get('courseName')?.hasError('required')">
-          Kurs Name darf nicht leer sein.
-        </mat-error>
-        <mat-error *ngIf="courseForm.get('courseName')?.hasError('minlength')">
-          Kurs Name muss mindestens 3 Zeichen lang sein.
-        </mat-error>
-      </mat-form-field>
-      <div class="form-actions">
-        <button
-          mat-raised-button
-          color="primary"
-          type="submit"
-          [disabled]="courseForm.invalid"
-        >
-          Hinzufügen
-        </button>
-        <button mat-button type="button" (click)="closeCourseForm()">
-          Abbrechen
-        </button>
-      </div>
-    </form>
-  </div>
 </div>

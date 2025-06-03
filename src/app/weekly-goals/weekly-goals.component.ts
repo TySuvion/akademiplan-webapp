@@ -34,7 +34,6 @@ export class WeeklyGoalsComponent implements OnInit {
     if (this.currentWeeklyGoal === undefined) {
       return '';
     }
-    console.log('Current Weekly Goal:', this.currentWeeklyGoal);
     let goalString = '';
     const plannedSessions = this.currentWeeklyGoal.goalSessions;
     const completedSessions = this.currentWeeklyGoal.completedSessions;
@@ -49,7 +48,6 @@ export class WeeklyGoalsComponent implements OnInit {
   }
 
   updateGoalProgress() {
-    console.log('updating goal progress ...');
     if (this.currentWeeklyGoal === undefined) {
       return;
     }

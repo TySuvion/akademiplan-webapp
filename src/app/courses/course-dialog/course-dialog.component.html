@@ -1,1 +1,36 @@
-<p>course-dialog works!</p>
+<h2 mat-dialog-title>
+  {{ data ? "Kurs bearbeiten" : "Neuen Kurs erstellen" }}
+</h2>
+
+<form [formGroup]="courseForm" (ngSubmit)="onSubmit()">
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Kurs Name</mat-label>
+    <input matInput formControlName="name" />
+  </mat-form-field>
+
+  <br />
+  <mat-checkbox formControlName="addWeekyGoal"
+    >Wochenziel einstellen</mat-checkbox
+  >
+
+  <hr />
+
+  <div *ngIf="courseForm.get('addWeekyGoal')?.value">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Session Ziel diese Woche</mat-label>
+      <input matInput type="number" formControlName="plannedSessions" />
+    </mat-form-field>
+  </div>
+
+  <div class="dialog-actions">
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [disabled]="courseForm.invalid"
+    >
+      Speichern
+    </button>
+    <button mat-button mat-dialog-close>Abbrechen</button>
+  </div>
+</form>

@@ -15,6 +15,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { WeeklyGoalsComponent } from '../weekly-goals/weekly-goals.component';
+import { CourseDialogComponent } from './course-dialog/course-dialog.component';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-courses',
@@ -28,6 +30,7 @@ import { WeeklyGoalsComponent } from '../weekly-goals/weekly-goals.component';
     MatInputModule,
     MatToolbarModule,
     WeeklyGoalsComponent,
+    MatDialogModule,
   ],
   templateUrl: './courses.component.html',
   styleUrl: './courses.component.css',
@@ -40,7 +43,8 @@ export class CoursesComponent {
 
   constructor(
     private formBuilder: FormBuilder,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -51,21 +55,14 @@ export class CoursesComponent {
     this.loadCourses();
   }
 
-  addCourseAndReload() {
-    if (this.courseForm.valid) {
-      const courseName = this.courseForm.get('courseName')?.value;
-      this.apiService.createCourse(courseName).subscribe({
-        next: (course) => {
-          console.log('Course added successfully:', course);
-          this.loadCourses();
-        },
-        error: (error) => {
-          console.error('Error adding course:', error);
-        },
-      });
-      this.courseForm.reset();
-      this.showCourseForm = false;
-    }
+  openAddCourseDialog() {
+    const dialogRef = this.dialog.open(CourseDialogComponent, { data: null });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.loadCourses();
+      }
+    });
   }
 
   loadCourses() {
@@ -98,19 +95,15 @@ export class CoursesComponent {
     });
   }
 
-  editCourse(courseId: number) {
-    const newCourseName = prompt('Enter new course name:');
-    if (!newCourseName) {
-      return;
-    }
-    this.apiService.updateCourse(courseId, newCourseName).subscribe({
-      next: () => {
-        console.log('Course updated successfully');
+  openEditCourseDialog(course: Course) {
+    const dialogRef = this.dialog.open(CourseDialogComponent, {
+      data: { course },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
         this.loadCourses();
-      },
-      error: (error) => {
-        console.error('Error updating course:', error);
-      },
+      }
     });
   }
 }

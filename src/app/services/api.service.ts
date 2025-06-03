@@ -65,17 +65,17 @@ export class ApiService {
     });
   }
 
-  createCourse(course: string): Observable<Course> {
+  createCourse(course: string, plannedSessions?: number): Observable<Course> {
     const uId = this.getUserIdFromToken();
-    return this.http.post<Course>(
-      `${this.baseUrl}/courses`,
-      { name: course, userId: uId },
-      {
-        headers: {
-          Authorization: `Bearer ${this.getToken()}`,
-        },
-      }
-    );
+    const payload: any = { name: course, userId: uId };
+    if (plannedSessions !== undefined) {
+      payload.sessionGoal = plannedSessions;
+    }
+    return this.http.post<Course>(`${this.baseUrl}/courses`, payload, {
+      headers: {
+        Authorization: `Bearer ${this.getToken()}`,
+      },
+    });
   }
 
   deleteUser(): Observable<any> {
@@ -116,7 +116,16 @@ export class ApiService {
     }
   }
 
-  updateCourse(courseId: number, courseName: string): Observable<Course> {
+  updateCourse(
+    courseId: number,
+    courseName: string,
+    plannedSession?: number
+  ): Observable<Course> {
+    let payload: any = { name: courseName };
+    if (plannedSession) {
+      payload.sessionGoal = plannedSession;
+    }
+    console.log('update course payload: ', payload);
     return this.http.patch<Course>(
       `${this.baseUrl}/courses/${courseId}`,
       { name: courseName },
@@ -237,6 +246,17 @@ export class ApiService {
         completedSessions: event.studyBlock?.completedSessions + 1,
       }
     );
+  }
+
+  createWeeklyGoal(
+    courseId: number,
+    plannedSessions: number
+  ): Observable<WeeklyGoal> {
+    return this.http.post<WeeklyGoal>(`${this.baseUrl}/courses/weeklygoal`, {
+      courseId: courseId,
+      goalSessions: plannedSessions,
+      completedSessions: 0,
+    });
   }
 
   updateGoalProgress(goal: WeeklyGoal): Observable<WeeklyGoal> {
