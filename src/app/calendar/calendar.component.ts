@@ -17,6 +17,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { Course } from '../models/course.model';
 import { MarkdownModule } from 'ngx-markdown';
 import { WeeklyGoalsComponent } from '../weekly-goals/weekly-goals.component';
+import { CoursesComponent } from '../courses/courses.component';
 
 @Component({
   selector: 'app-calendar',

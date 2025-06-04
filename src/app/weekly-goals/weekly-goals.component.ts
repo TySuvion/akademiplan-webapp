@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnChanges } from '@angular/core';
 import { Course, WeeklyGoal } from '../models/course.model';
 import { ApiService } from '../services/api.service';
 import { CommonModule } from '@angular/common';
@@ -10,8 +10,9 @@ import { CommonModule } from '@angular/common';
   templateUrl: './weekly-goals.component.html',
   styleUrl: './weekly-goals.component.css',
 })
-export class WeeklyGoalsComponent implements OnInit {
+export class WeeklyGoalsComponent implements OnInit, OnChanges {
   @Input({ required: true }) course!: Course;
+  @Input() date: Date = new Date();
   currentWeeklyGoal: WeeklyGoal | undefined;
 
   constructor(private apiService: ApiService) {}
@@ -21,8 +22,15 @@ export class WeeklyGoalsComponent implements OnInit {
     this.updateGoalProgress();
   }
 
+  ngOnChanges() {
+    console.log('change');
+    this.setCurrentWeeksGoal();
+    this.updateGoalProgress();
+  }
+
   setCurrentWeeksGoal() {
-    const today = new Date();
+    const today = new Date(this.date);
+    console.log('currentDate: ', today);
     this.currentWeeklyGoal = this.course.weeklyGoals.find((goal) => {
       const weekStart = new Date(goal.weekStart);
       const weekEnd = new Date(goal.weekEnd);
@@ -44,6 +52,7 @@ export class WeeklyGoalsComponent implements OnInit {
         goalString += '⬜️ ';
       }
     }
+    goalString += `${completedSessions}/${plannedSessions}`;
     return goalString.trim();
   }
 
@@ -52,9 +61,6 @@ export class WeeklyGoalsComponent implements OnInit {
       return;
     }
     this.apiService.updateGoalProgress(this.currentWeeklyGoal).subscribe({
-      next: (updatedGoal) => {
-        console.log('Goal progress updated:', updatedGoal);
-      },
       error: (error) => {
         console.error('Error updating goal progress:', error);
       },

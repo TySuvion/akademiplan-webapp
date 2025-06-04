@@ -108,3 +108,15 @@
     </mat-card-content>
   </mat-card>
 </div>
+<h2>Dein Wochenziel Fortschritt</h2>
+<div *ngFor="let course of courses">
+  <div *ngIf="course.weeklyGoals[0]">
+    <h4>{{ course.name }}</h4>
+    <hr />
+    <app-weekly-goals
+      [course]="course"
+      [date]="selectedDateSignal()"
+    ></app-weekly-goals>
+    <hr />
+  </div>
+</div>
