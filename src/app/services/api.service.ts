@@ -128,7 +128,7 @@ export class ApiService {
     console.log('update course payload: ', payload);
     return this.http.patch<Course>(
       `${this.baseUrl}/courses/${courseId}`,
-      { name: courseName },
+      payload,
       {
         headers: { Authorization: `Bearer ${this.getToken()}` },
       }
