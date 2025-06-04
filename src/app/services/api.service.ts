@@ -265,4 +265,11 @@ export class ApiService {
       {} //progress updates automatically in backend
     );
   }
+
+  getAllStudyblocksUntilToday(): Observable<CalendarEvent[]> {
+    let userId = this.getUserIdFromToken();
+    return this.http.get<CalendarEvent[]>(
+      `${this.baseUrl}/events/untilToday/${userId}`
+    ); //TODO hier weitermachen
+  }
 }
