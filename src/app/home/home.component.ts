@@ -12,6 +12,7 @@ import { MatCardModule } from '@angular/material/card';
 import { CalendarComponent } from '../calendar/calendar.component';
 import { CalendarEvent } from '../models/event.model';
 import { StudysessionComponent } from '../studysession/studysession.component';
+import { StreaksComponent } from '../streaks/streaks.component';
 
 @Component({
   selector: 'app-home',
@@ -24,6 +25,7 @@ import { StudysessionComponent } from '../studysession/studysession.component';
     CoursesComponent,
     CalendarComponent,
     StudysessionComponent,
+    StreaksComponent,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',

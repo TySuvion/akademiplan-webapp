@@ -8,6 +8,8 @@
 </mat-toolbar>
 
 <div class="home-container">
+  <app-streaks></app-streaks>
+
   <mat-card *ngIf="this.showCalendar" class="home-title-card">
     <mat-card-title>{{ helloMessage }} {{ username }}!</mat-card-title>
   </mat-card>
