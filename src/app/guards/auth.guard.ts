@@ -9,7 +9,7 @@ export const authGuard: CanActivateFn = (route, state) => {
 
   if (token) {
     const decodedToken: any = jwtDecode(token);
-    checkIfTokenIsExpiredAndRedirect(decodedToken);
+    return checkIfTokenIsExpiredAndRedirect(decodedToken);
   }
   redirectToLogin(inject(Router));
   return false;
