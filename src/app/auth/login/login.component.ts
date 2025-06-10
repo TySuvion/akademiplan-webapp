@@ -54,9 +54,7 @@ export class LoginComponent {
       const { username, password } = this.loginForm.value;
       this.authService.login(username, password).subscribe({
         next: (response) => {
-          this.authService.saveToken(response.body.accessToken);
-          localStorage.setItem('username', username);
-          this.router.navigate(['/home']);
+          this.completeLogin(response, username);
         },
         error: (error) => {
           this.errorMessage = 'Ungültiger Benutzername oder Passwort';
@@ -64,5 +62,11 @@ export class LoginComponent {
         },
       });
     }
+  }
+
+  completeLogin(response: any, username: string) {
+    this.authService.saveToken(response.body.accessToken);
+    localStorage.setItem('username', username);
+    this.router.navigate(['/home']);
   }
 }
