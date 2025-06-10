@@ -203,7 +203,6 @@ export class ApiService {
   }
 
   completeStudySession(event: CalendarEvent): Observable<CalendarEvent> {
-    console.log(event);
     if (!event.studyBlock) {
       throw new Error('Event does not have a study block associated with it.');
     }
