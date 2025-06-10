@@ -31,19 +31,4 @@ export class AuthService {
     console.log('User logged out');
     localStorage.clear();
   }
-
-  saveToken(token: string): Promise<void> {
-    return new Promise((resolve) => {
-      localStorage.setItem('token', token);
-      resolve;
-    });
-  }
-
-  getToken(): string | null {
-    return localStorage.getItem('token');
-  }
-
-  clearToken(): void {
-    localStorage.removeItem('token');
-  }
 }

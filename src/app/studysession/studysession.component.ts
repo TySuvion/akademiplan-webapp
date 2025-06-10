@@ -16,7 +16,6 @@ import { ContinueStudyDialogComponent } from './continue-study-dialog/continue-s
     MatButtonModule,
     MatIconModule,
     MarkdownModule,
-    ContinueStudyDialogComponent,
     MatDialogModule,
   ],
   templateUrl: './studysession.component.html',
