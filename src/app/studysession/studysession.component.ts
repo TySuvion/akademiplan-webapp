@@ -89,7 +89,6 @@ export class StudysessionComponent {
     }
     if (this.isStudyBlockCompleted()) {
       const shouldContinue = await this.continueStudyingDialogOpen();
-      console.log(shouldContinue);
       if (shouldContinue) {
         return;
       } else {
@@ -131,9 +130,7 @@ export class StudysessionComponent {
       if (this.timeLeft > 0) {
         this.timeLeft--;
         this.updateDisplayTime();
-        console.log('Timer still running: ', this.timeLeft);
       } else {
-        console.log('Timer completed');
         this.completedStudySession();
       }
     }, 1000);

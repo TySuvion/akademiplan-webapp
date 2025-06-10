@@ -69,7 +69,6 @@ export class CoursesComponent {
     this.apiService.loadCourses().subscribe({
       next: (courses) => {
         this.courses = courses;
-        console.log('Courses loaded successfully:', this.courses);
       },
     });
   }
@@ -86,7 +85,6 @@ export class CoursesComponent {
   deleteCourse(courseId: number) {
     this.apiService.deleteCourse(courseId).subscribe({
       next: () => {
-        console.log('Course deleted successfully');
         this.loadCourses();
       },
       error: (error) => {

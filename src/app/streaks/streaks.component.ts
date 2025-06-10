@@ -25,7 +25,6 @@ export class StreaksComponent implements OnInit, OnChanges {
 
   setStreak() {
     //get a list with all the events up until today where sessions where planned
-    console.log('setting the streak');
     this.apiService.getAllStudyblocksUntilToday().subscribe({
       next: (studyblockEvents) => {
         studyblockEvents.forEach((event) => {
@@ -33,7 +32,6 @@ export class StreaksComponent implements OnInit, OnChanges {
           event.start.setHours(0, 0, 0, 0);
         });
         this.events = studyblockEvents;
-        console.log('setting Events: ', this.events);
         this.createAListOfDateUntilYesterday();
         this.days.forEach((date) => {
           const block = this.events.find((event) => {
@@ -44,10 +42,8 @@ export class StreaksComponent implements OnInit, OnChanges {
           if (block) {
             if (block.studyBlock?.completedSessions! > 0) {
               this.increaseStreak();
-              console.log('increased streak on day:', date);
             } else {
               this.resetStreak();
-              console.log('resetStreak on day:', date);
             }
           }
         });
@@ -59,12 +55,10 @@ export class StreaksComponent implements OnInit, OnChanges {
   }
 
   createAListOfDateUntilYesterday() {
-    console.log('creating days list', this.events);
     if (this.events.length === 0) return;
     const firstDate = new Date(this.events[0].start);
     const today = new Date();
     let daysList: Date[] = [];
-    console.log('firstDate');
     let currentDate = new Date(firstDate);
     currentDate.setHours(0, 0, 0, 0);
 
@@ -73,7 +67,6 @@ export class StreaksComponent implements OnInit, OnChanges {
       currentDate.setDate(currentDate.getDate() + 1);
     }
 
-    console.log('created days list: ', daysList);
     this.days = daysList;
   }
 

@@ -71,7 +71,6 @@ export class HomeComponent {
   }
 
   goToProfile() {
-    console.log('Go to Profile');
     this.router.navigate(['/profile']);
   }
 

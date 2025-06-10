@@ -23,14 +23,12 @@ export class WeeklyGoalsComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    console.log('change');
     this.setCurrentWeeksGoal();
     this.updateGoalProgress();
   }
 
   setCurrentWeeksGoal() {
     const today = new Date(this.date);
-    console.log('currentDate: ', today);
     this.currentWeeklyGoal = this.course.weeklyGoals.find((goal) => {
       const weekStart = new Date(goal.weekStart);
       const weekEnd = new Date(goal.weekEnd);
