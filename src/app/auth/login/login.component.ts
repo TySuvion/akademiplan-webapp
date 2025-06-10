@@ -15,6 +15,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-login',
@@ -40,7 +41,7 @@ export class LoginComponent {
 
   constructor(
     private formBuilder: FormBuilder,
-    private apiService: ApiService,
+    private authService: AuthService,
     private router: Router
   ) {
     this.loginForm = this.formBuilder.group({
@@ -51,9 +52,9 @@ export class LoginComponent {
   onSubmit() {
     if (this.loginForm.valid) {
       const { username, password } = this.loginForm.value;
-      this.apiService.login(username, password).subscribe({
+      this.authService.login(username, password).subscribe({
         next: (response) => {
-          this.apiService.saveToken(response.body.accessToken);
+          this.authService.saveToken(response.body.accessToken);
           localStorage.setItem('username', username);
           this.router.navigate(['/home']);
         },
