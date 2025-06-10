@@ -4,12 +4,13 @@ import { Observable } from 'rxjs';
 import { Course, WeeklyGoal } from '../models/course.model';
 import { CalendarEvent, StudyBlock } from '../models/event.model';
 import { StudyblockService } from './studyblock.service';
+import { environment } from '../../environments/env.dev';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
-  private baseUrl = 'http://localhost:3000';
+  private baseUrl = environment.apiUrl;
   constructor(
     private http: HttpClient,
     private studyblockService: StudyblockService
