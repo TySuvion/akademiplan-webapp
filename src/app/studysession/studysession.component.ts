@@ -41,6 +41,7 @@ export class StudysessionComponent {
   @Output() sessionCompleted = new EventEmitter<CalendarEvent>();
   @Output() studyBlockEnded = new EventEmitter<void>();
 
+  private timerSound = new Audio('assets/Timer_Complete.wav');
   private timerInterval: any;
   timeLeft: number = 25;
   isRunning: boolean = false;
@@ -66,6 +67,10 @@ export class StudysessionComponent {
   }
 
   async completedStudySession() {
+    this.timerSound
+      .play()
+      .catch((error) => console.error('Error playing sound', error));
+
     if (this.timerState == TimerState.STUDY) {
       this.apiService.completeStudySession(this.studyBlockEvent).subscribe({
         next: (response) => {
