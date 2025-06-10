@@ -28,7 +28,6 @@ export class AuthService {
   }
 
   logout() {
-    console.log('User logged out');
     localStorage.clear();
   }
 }
