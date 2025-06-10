@@ -41,6 +41,7 @@ export class StudysessionComponent {
   @Output() sessionCompleted = new EventEmitter<CalendarEvent>();
   @Output() studyBlockEnded = new EventEmitter<void>();
 
+  private timerWorker: Worker;
   private timerSound = new Audio('assets/Timer_Complete.wav');
   private timerInterval: any;
   timeLeft: number = 25;
@@ -48,7 +49,35 @@ export class StudysessionComponent {
   displayTime: string = '25:00';
   timerState: TimerState = TimerState.STUDY;
 
-  constructor(private apiService: ApiService, private dialog: MatDialog) {}
+  constructor(private apiService: ApiService, private dialog: MatDialog) {
+    this.timerWorker = new Worker(
+      new URL('./studysession.worker', import.meta.url)
+    );
+
+    this.timerWorker.onmessage = ({ data }) => {
+      switch (data.type) {
+        case 'RUNNING':
+          this.timeLeft = data.timeLeft;
+          this.updateDisplayTime();
+          break;
+        case 'PAUSED':
+          this.timeLeft = data.timeLeft;
+          this.isRunning = false;
+          break;
+        case 'COMPLETE':
+          this.timerSound
+            .play()
+            .catch((error) => console.error('Error Playing TimerSound', error));
+          this.completedStudySession();
+          break;
+        case 'RESET':
+          this.timeLeft = data.timeLeft;
+          this.updateDisplayTime();
+          this.isRunning = false;
+          break;
+      }
+    };
+  }
 
   stopStudying() {
     this.studyBlockEnded.emit();
@@ -67,10 +96,6 @@ export class StudysessionComponent {
   }
 
   async completedStudySession() {
-    this.timerSound
-      .play()
-      .catch((error) => console.error('Error playing sound', error));
-
     if (this.timerState == TimerState.STUDY) {
       this.apiService.completeStudySession(this.studyBlockEvent).subscribe({
         next: (response) => {
@@ -78,18 +103,17 @@ export class StudysessionComponent {
           this.sessionCompleted.emit(this.studyBlockEvent);
           this.stopTimerAndReset();
           this.timerState = TimerState.BREAK;
-          this.startTimer(5); // Start a 5-minute break timer
+          this.startTimer(5);
         },
         error: (error) => {
           console.error('Error completing study session:', error);
-          // Handle error appropriately, e.g., show a notification
         },
       });
     }
     if (this.timerState == TimerState.BREAK) {
       this.stopTimerAndReset();
       this.timerState = TimerState.STUDY;
-      this.startTimer(25); // Start a 25-minute study timer
+      this.startTimer(25);
     }
     if (this.isStudyBlockCompleted()) {
       const shouldContinue = await this.continueStudyingDialogOpen();
@@ -127,33 +151,24 @@ export class StudysessionComponent {
   startTimer(minutes: number) {
     if (this.isRunning) return;
 
-    this.timeLeft = minutes * 60;
     this.isRunning = true;
-
-    this.timerInterval = setInterval(() => {
-      if (this.timeLeft > 0) {
-        this.timeLeft--;
-        this.updateDisplayTime();
-      } else {
-        this.completedStudySession();
-      }
-    }, 1000);
+    this.timerWorker.postMessage({
+      type: 'START',
+      minutes,
+      state: this.timerState,
+    });
   }
 
   pauseTimer() {
-    if (this.timerInterval) {
-      clearInterval(this.timerInterval);
-      this.isRunning = false;
-      this.timeLeft = this.timeLeft / 60;
-    }
+    this.timerWorker.postMessage({ type: 'PAUSE' });
+    this.isRunning = false;
   }
 
   stopTimerAndReset() {
-    if (this.timerInterval) {
-      clearInterval(this.timerInterval);
-      this.isRunning = false;
-      this.updateDisplayTime();
-    }
+    this.timerWorker.postMessage({ type: 'STOP' });
+    this.timerWorker.postMessage({ type: 'RESET' });
+    this.isRunning = false;
+    this.updateDisplayTime();
   }
 
   private updateDisplayTime() {
@@ -164,14 +179,8 @@ export class StudysessionComponent {
       .padStart(2, '0')}`;
   }
 
-  private timerComplete() {
-    this.stopTimerAndReset();
-    this.sessionCompleted.emit(this.studyBlockEvent);
-    // You might want to play a sound or show a notification here
-  }
-
   ngOnDestroy() {
-    this.pauseTimer();
+    this.timerWorker.terminate();
   }
 }
 
