@@ -13,7 +13,7 @@ export class AuthService {
 
   signUp(username: string, password: string): Observable<any> {
     return this.http.post(
-      `${this.baseUrl}/users`,
+      `${this.baseUrl}/auth/signup`,
       { username: username, password: password },
       { observe: 'response' }
     );
@@ -32,8 +32,11 @@ export class AuthService {
     localStorage.clear();
   }
 
-  saveToken(token: string): void {
-    localStorage.setItem('token', token);
+  saveToken(token: string): Promise<void> {
+    return new Promise((resolve) => {
+      localStorage.setItem('token', token);
+      resolve;
+    });
   }
 
   getToken(): string | null {

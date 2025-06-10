@@ -4,7 +4,7 @@ import { ApiService } from '../services/api.service';
 
 export const AuthInterceptor: HttpInterceptorFn = (req, next) => {
   const apiService = inject(ApiService);
-  const token = apiService.getToken();
+  const token = localStorage.getItem('token');
 
   if (token) {
     const cloned = req.clone({

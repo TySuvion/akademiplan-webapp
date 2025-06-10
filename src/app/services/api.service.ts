@@ -18,7 +18,7 @@ export class ApiService {
   getCourseById(courseId: number): Observable<Course> {
     return this.http.get<Course>(`${this.baseUrl}/courses/${courseId}`, {
       headers: {
-        Authorization: `Bearer ${this.getToken()}`,
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     });
   }
@@ -27,7 +27,7 @@ export class ApiService {
     const userId = this.getUserIdFromToken();
     return this.http.get<Course[]>(`${this.baseUrl}/courses/user/${userId}`, {
       headers: {
-        Authorization: `Bearer ${this.getToken()}`,
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     });
   }
@@ -40,7 +40,7 @@ export class ApiService {
     }
     return this.http.post<Course>(`${this.baseUrl}/courses`, payload, {
       headers: {
-        Authorization: `Bearer ${this.getToken()}`,
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     });
   }
@@ -49,7 +49,7 @@ export class ApiService {
     const userId = this.getUserIdFromToken();
     return this.http.delete(`${this.baseUrl}/users/${userId}`, {
       headers: {
-        Authorization: `Bearer ${this.getToken()}`,
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
       observe: 'response',
     });
@@ -62,7 +62,7 @@ export class ApiService {
       { username: newUsername },
       {
         headers: {
-          Authorization: `Bearer ${this.getToken()}`,
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
         observe: 'response',
       }
@@ -70,7 +70,7 @@ export class ApiService {
   }
 
   getUserIdFromToken(): string | null {
-    const token = this.getToken();
+    const token = localStorage.getItem('token');
     if (!token) return null;
 
     try {
@@ -97,14 +97,14 @@ export class ApiService {
       `${this.baseUrl}/courses/${courseId}`,
       payload,
       {
-        headers: { Authorization: `Bearer ${this.getToken()}` },
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
       }
     );
   }
 
   deleteCourse(courseId: number): Observable<Course> {
     return this.http.delete<Course>(`${this.baseUrl}/courses/${courseId}`, {
-      headers: { Authorization: `Bearer ${this.getToken()}` },
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
     });
   }
 
@@ -116,7 +116,7 @@ export class ApiService {
     return this.http.get<CalendarEvent[]>(
       `${this.baseUrl}/events/user/${userId}/${date}`,
       {
-        headers: { Authorization: `Bearer ${this.getToken()}` },
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
       }
     );
   }

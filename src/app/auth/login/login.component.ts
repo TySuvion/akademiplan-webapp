@@ -6,7 +6,6 @@ import {
   Validators,
 } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { ApiService } from '../../services/api.service';
 import { Router } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -57,16 +56,20 @@ export class LoginComponent {
           this.completeLogin(response, username);
         },
         error: (error) => {
-          this.errorMessage = 'Ungültiger Benutzername oder Passwort';
-          console.error('Error logging in:', error);
+          this.errorOnLogin(error);
         },
       });
     }
   }
 
-  completeLogin(response: any, username: string) {
-    this.authService.saveToken(response.body.accessToken);
+  async completeLogin(response: any, username: string) {
+    await this.authService.saveToken(response.body.accessToken);
     localStorage.setItem('username', username);
     this.router.navigate(['/home']);
+  }
+
+  errorOnLogin(error: any) {
+    this.errorMessage = 'Ungültiger Benutzername oder Passwort';
+    console.error('Error logging in:', error);
   }
 }

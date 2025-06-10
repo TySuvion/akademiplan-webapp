@@ -16,6 +16,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-signup',
@@ -41,7 +42,7 @@ export class SignupComponent {
 
   constructor(
     private formBuilder: FormBuilder,
-    private apiService: ApiService,
+    private authService: AuthService,
     private router: Router
   ) {
     this.signupForm = this.formBuilder.group(
@@ -72,17 +73,26 @@ export class SignupComponent {
   onSubmit() {
     if (this.signupForm.valid) {
       const { username, password } = this.signupForm.value;
-      this.apiService.signUp(username, password).subscribe({
+      this.authService.signUp(username, password).subscribe({
         next: (response) => {
-          console.log('User signed up successfully:', response);
-          this.router.navigate(['/login']);
+          this.completeSignUpAndLogin(response, username);
         },
         error: (error) => {
-          this.errorMessage =
-            'Ein Fehler ist aufgetreten. Nutzername möglicherweise bereits vergeben.';
-          console.error('Error signing up:', error);
+          this.errorOnSignUp(error);
         },
       });
     }
+  }
+
+  async completeSignUpAndLogin(response: any, username: string) {
+    await this.authService.saveToken(response.body.accessToken);
+    localStorage.setItem('username', username);
+    this.router.navigate(['/home']);
+  }
+
+  errorOnSignUp(error: any) {
+    this.errorMessage =
+      'Ein Fehler ist aufgetreten. Nutzername möglicherweise bereits vergeben.';
+    console.error('Error signing up:', error);
   }
 }

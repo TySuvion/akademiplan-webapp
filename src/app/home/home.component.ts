@@ -13,6 +13,7 @@ import { CalendarComponent } from '../calendar/calendar.component';
 import { CalendarEvent } from '../models/event.model';
 import { StudysessionComponent } from '../studysession/studysession.component';
 import { StreaksComponent } from '../streaks/streaks.component';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -39,7 +40,11 @@ export class HomeComponent {
   showCalendar: boolean = true;
   showStudySession: boolean = false;
 
-  constructor(private apiService: ApiService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private apiService: ApiService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.determineTimeOfDay();
@@ -61,7 +66,7 @@ export class HomeComponent {
   }
 
   logout() {
-    this.apiService.logout();
+    this.authService.logout();
     this.router.navigate(['/login']);
   }
 
