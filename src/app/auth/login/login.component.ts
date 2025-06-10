@@ -62,8 +62,8 @@ export class LoginComponent {
     }
   }
 
-  async completeLogin(response: any, username: string) {
-    await this.authService.saveToken(response.body.accessToken);
+  completeLogin(response: any, username: string) {
+    localStorage.setItem('token', response.body.accessToken);
     localStorage.setItem('username', username);
     this.router.navigate(['/home']);
   }

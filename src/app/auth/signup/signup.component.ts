@@ -85,7 +85,7 @@ export class SignupComponent {
   }
 
   async completeSignUpAndLogin(response: any, username: string) {
-    await this.authService.saveToken(response.body.accessToken);
+    localStorage.setItem('token', response.body.accessToken);
     localStorage.setItem('username', username);
     this.router.navigate(['/home']);
   }
