@@ -14,6 +14,7 @@ import { CalendarEvent } from '../models/event.model';
 import { StudysessionComponent } from '../studysession/studysession.component';
 import { StreaksComponent } from '../streaks/streaks.component';
 import { AuthService } from '../auth/auth.service';
+import { UpdateComponentsServiceService } from '../services/update-components-service.service';
 
 @Component({
   selector: 'app-home',
@@ -42,8 +43,8 @@ export class HomeComponent {
 
   constructor(
     private authService: AuthService,
-    private apiService: ApiService,
-    private router: Router
+    private router: Router,
+    private updateCompontentsService: UpdateComponentsServiceService
   ) {}
 
   ngOnInit() {
@@ -99,5 +100,7 @@ export class HomeComponent {
     this.showCalendar = true;
   }
 
-  sessionCompleted(studyBlock: CalendarEvent) {}
+  sessionCompleted(studyBlock: CalendarEvent) {
+    this.updateCompontentsService.notifyStudySessionCompleted(studyBlock);
+  }
 }

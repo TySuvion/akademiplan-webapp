@@ -18,6 +18,7 @@ import { Course } from '../models/course.model';
 import { MarkdownModule } from 'ngx-markdown';
 import { WeeklyGoalsComponent } from '../weekly-goals/weekly-goals.component';
 import { CoursesComponent } from '../courses/courses.component';
+import { UpdateComponentsServiceService } from '../services/update-components-service.service';
 
 @Component({
   selector: 'app-calendar',
@@ -40,7 +41,11 @@ export class CalendarComponent implements OnInit {
   events: CalendarEvent[] = [];
   courses: Course[] = [];
 
-  constructor(private apiService: ApiService, private dialog: MatDialog) {}
+  constructor(
+    private apiService: ApiService,
+    private dialog: MatDialog,
+    private updateComponentsService: UpdateComponentsServiceService
+  ) {}
 
   ngOnInit() {
     this.loadEvents();
@@ -107,7 +112,10 @@ export class CalendarComponent implements OnInit {
 
   deleteEvent(eventId: number) {
     this.apiService.deleteEvent(eventId).subscribe({
-      next: () => this.loadEvents(),
+      next: () => {
+        this.loadEvents();
+        this.updateComponentsService.notifyBlockDeleted(eventId);
+      },
       error: (error) => console.error('Error deleting event:', error),
     });
   }

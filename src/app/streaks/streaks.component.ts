@@ -1,6 +1,8 @@
-import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ApiService } from '../services/api.service';
 import { CalendarEvent } from '../models/event.model';
+import { UpdateComponentsServiceService } from '../services/update-components-service.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-streaks',
@@ -8,20 +10,38 @@ import { CalendarEvent } from '../models/event.model';
   templateUrl: './streaks.component.html',
   styleUrl: './streaks.component.css',
 })
-export class StreaksComponent implements OnInit, OnChanges {
+export class StreaksComponent implements OnInit, OnDestroy {
   //Everyday that a Session was planned and completed the streak will go up
   //If there is a day with
   currentStreak: number = 0;
   events: CalendarEvent[] = [];
   days: Date[] = [];
+  private subscriptions: Subscription[] = [];
 
-  constructor(private apiService: ApiService) {}
+  constructor(
+    private apiService: ApiService,
+    private updateComponentsService: UpdateComponentsServiceService
+  ) {
+    this.subscriptions.push(
+      this.updateComponentsService.studySessionCompleted$.subscribe((event) => {
+        this.setStreak();
+      })
+    );
+
+    this.subscriptions.push(
+      this.updateComponentsService.blockDeleted$.subscribe((blockId) => {
+        this.setStreak();
+      })
+    );
+  }
 
   ngOnInit(): void {
     this.setStreak();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {}
+  ngOnDestroy() {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
+  }
 
   setStreak() {
     //get a list with all the events up until today where sessions where planned
