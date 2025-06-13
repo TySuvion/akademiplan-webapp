@@ -44,33 +44,43 @@ export class StreaksComponent implements OnInit, OnDestroy {
   }
 
   setStreak() {
-    //get a list with all the events up until today where sessions where planned
     this.apiService.getAllStudyblocksUntilToday().subscribe({
       next: (studyblockEvents) => {
+        // Reset streak at start
+        this.currentStreak = 0;
+
+        // Normalize dates
         studyblockEvents.forEach((event) => {
           event.start = new Date(event.start);
           event.start.setHours(0, 0, 0, 0);
         });
+
         this.events = studyblockEvents;
         this.createAListOfDateUntilYesterday();
+
+        // Track consecutive successful days
+        let consecutiveDays = 0;
+
         this.days.forEach((date) => {
-          const block = this.events.find((event) => {
-            const start = new Date(event.start).toISOString();
-            const day = new Date(date).toISOString();
-            return start == day;
-          });
+          //check if they are any studyblocks planned on each date
+          const block = this.events.find(
+            (event) => event.start.getTime() === date.getTime()
+          );
+          //only if a block exists will the consectiveDays be counted or reset
           if (block) {
-            if (block.studyBlock?.completedSessions! > 0) {
-              this.increaseStreak();
+            if (block?.studyBlock?.completedSessions! > 0) {
+              consecutiveDays++;
             } else {
-              this.resetStreak();
+              consecutiveDays = 0;
             }
           }
+
+          this.currentStreak = consecutiveDays;
         });
+
+        // Check today separately
         this.checkProgressForToday();
       },
-      error: (error) =>
-        console.error('Error getting all Events for Streak: ', error),
     });
   }
 
