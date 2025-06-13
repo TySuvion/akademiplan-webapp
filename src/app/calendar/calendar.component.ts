@@ -106,7 +106,10 @@ export class CalendarComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      if (result) this.loadEvents();
+      if (result) {
+        this.loadEvents();
+        this.updateComponentsService.notifyStudySessionCompleted(event);
+      }
     });
   }
 

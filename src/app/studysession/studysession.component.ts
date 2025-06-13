@@ -73,7 +73,6 @@ export class StudysessionComponent {
         case 'RESET':
           this.timeLeft = data.timeLeft;
           this.updateDisplayTime();
-          this.isRunning = false;
           break;
       }
     };

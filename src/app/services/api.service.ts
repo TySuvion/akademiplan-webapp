@@ -128,7 +128,8 @@ export class ApiService {
     description: string,
     start: Date,
     end: Date,
-    courseId?: number | null
+    courseId?: number | null,
+    completedSessions?: number | null
   ): Observable<CalendarEvent> {
     const uId = this.getUserIdFromToken();
     const plannedSessions = this.studyblockService.calculatePlannedSessions(
@@ -146,7 +147,7 @@ export class ApiService {
           courseId: courseId,
           userId: uId,
           plannedSessions: plannedSessions,
-          completedSessions: 0,
+          completedSessions: completedSessions || 0,
         }
       );
     }

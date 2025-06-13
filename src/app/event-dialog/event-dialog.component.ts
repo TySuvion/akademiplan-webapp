@@ -92,10 +92,13 @@ export class EventDialogComponent {
       const description = event.description.trim();
       const courseId = event.course;
       const type = event.type;
+      const sessions = this.calculateSessions(startDate, endDate);
 
       let completedSessions = this.data.event?.studyBlock?.completedSessions;
       if (event.done) {
-        completedSessions = this.data.event?.studyBlock?.plannedSessions;
+        completedSessions =
+          this.data.event?.studyBlock?.plannedSessions || sessions;
+        console.log('completedSessions', completedSessions);
       }
       const request = this.data.event
         ? this.apiService.updateEvent(
@@ -114,7 +117,8 @@ export class EventDialogComponent {
             description,
             startDate,
             endDate,
-            courseId
+            courseId,
+            completedSessions
           );
 
       request.subscribe({
@@ -139,5 +143,11 @@ export class EventDialogComponent {
     const d = new Date(date);
     //Format as YYYY-MM-DDThh:mm
     return d.toLocaleString('sv').slice(0, 16);
+  }
+
+  calculateSessions(start: Date, end: Date): number {
+    const diff = end.getTime() - start.getTime();
+    const hours = diff / (1000 * 60 * 60);
+    return Math.ceil(hours / 0.5); // Assuming each session is 30 minutes
   }
 }
