@@ -13,11 +13,11 @@ export class UpdateComponentsServiceService {
   private blockDeletedSubject = new BehaviorSubject<number | null>(null);
   blockDeleted$ = this.blockDeletedSubject.asObservable();
 
-  notifyStudySessionCompleted(event: CalendarEvent) {
+  notifyStudySessionCompleted(event: CalendarEvent | null) {
     this.studySessionCompletedSubject.next(event);
   }
 
-  notifyBlockDeleted(blockId: number) {
+  notifyBlockDeleted(blockId: number | null) {
     this.blockDeletedSubject.next(blockId);
   }
 }

@@ -29,6 +29,9 @@ export class WeeklyGoalsComponent implements OnInit, OnChanges {
 
   setCurrentWeeksGoal() {
     const today = new Date(this.date);
+    if (!this.course.weeklyGoals) {
+      return;
+    }
     this.currentWeeklyGoal = this.course.weeklyGoals.find((goal) => {
       const weekStart = new Date(goal.weekStart);
       const weekEnd = new Date(goal.weekEnd);

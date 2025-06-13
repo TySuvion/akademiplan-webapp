@@ -19,6 +19,7 @@ import { MarkdownModule } from 'ngx-markdown';
 import { WeeklyGoalsComponent } from '../weekly-goals/weekly-goals.component';
 import { CoursesComponent } from '../courses/courses.component';
 import { UpdateComponentsServiceService } from '../services/update-components-service.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-calendar',
@@ -40,12 +41,24 @@ export class CalendarComponent implements OnInit {
 
   events: CalendarEvent[] = [];
   courses: Course[] = [];
+  private subscriptions: Subscription[] = [];
 
   constructor(
     private apiService: ApiService,
     private dialog: MatDialog,
     private updateComponentsService: UpdateComponentsServiceService
-  ) {}
+  ) {
+    this.subscriptions.push(
+      this.updateComponentsService.studySessionCompleted$.subscribe((event) => {
+        this.updateGoals();
+      })
+    );
+    this.subscriptions.push(
+      this.updateComponentsService.blockDeleted$.subscribe((blockId) => {
+        this.updateGoals();
+      })
+    );
+  }
 
   ngOnInit() {
     this.loadEvents();
@@ -95,7 +108,10 @@ export class CalendarComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      if (result) this.loadEvents();
+      if (result) {
+        this.loadEvents();
+        this.updateGoals();
+      }
     });
   }
 
@@ -108,7 +124,7 @@ export class CalendarComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.loadEvents();
-        this.updateComponentsService.notifyStudySessionCompleted(event);
+        this.updateGoals();
       }
     });
   }
@@ -117,6 +133,7 @@ export class CalendarComponent implements OnInit {
     this.apiService.deleteEvent(eventId).subscribe({
       next: () => {
         this.loadEvents();
+        this.updateGoals();
         this.updateComponentsService.notifyBlockDeleted(eventId);
       },
       error: (error) => console.error('Error deleting event:', error),
@@ -136,6 +153,25 @@ export class CalendarComponent implements OnInit {
     this.apiService.completeStudySession(event).subscribe({
       next: () => this.loadEvents(),
       error: (error) => console.error('Error completing study session:', error),
+    });
+  }
+
+  updateGoals() {
+    let weeklyGoalsIDs: number[] = [];
+    this.courses.forEach((course) => {
+      course.weeklyGoals.forEach((goal) => {
+        if (goal.id) {
+          weeklyGoalsIDs.push(goal.id);
+        }
+      });
+    });
+    weeklyGoalsIDs.forEach((goalId) => {
+      this.apiService.updateGoalProgress({ id: goalId } as any).subscribe({
+        next: () => {},
+        error: (error) => {
+          console.error('Error updating goal progress:', error);
+        },
+      });
     });
   }
 }
