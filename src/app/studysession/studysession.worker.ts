@@ -19,7 +19,7 @@ self.addEventListener('message', ({ data }: { data: TimerMessage }) => {
   switch (data.type) {
     case 'START':
       if (data.minutes) {
-        timeLeft = data.minutes * 60;
+        timeLeft = data.minutes * 60; // Convert minutes to seconds
         currentState = data.state || TimerState.STUDY;
         startTimer();
       }
@@ -54,12 +54,12 @@ function startTimer() {
         state: currentState,
       });
     }
-  }, 1000);
+  }, 1000); //delay of 1 second (1000 milliseconds)
 }
 
 function pauseTimer() {
   clearInterval(timerInterval);
-  timeLeft = timeLeft / 60;
+  timeLeft = timeLeft / 60; // Convert seconds back to minutes for display
   self.postMessage({
     type: 'PAUSED',
     timeLeft,

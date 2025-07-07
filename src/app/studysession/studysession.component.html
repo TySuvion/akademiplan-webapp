@@ -2,10 +2,19 @@
 <div class="timer">
   <mat-card>
     <mat-card-header>
-      <mat-card-title
-        >Session {{ getCurrentSession() }} of
-        {{ studyBlockEvent.studyBlock?.plannedSessions }}</mat-card-title
-      >
+      <div *ngIf="this.timerState == 'STUDY'">
+        <mat-card-title
+          >Session {{ getCurrentSession() }} von
+          {{ studyBlockEvent.studyBlock?.plannedSessions }}</mat-card-title
+        >
+      </div>
+      <div *ngIf="this.timerState == 'BREAK'">
+        <mat-card-title
+          >Pause {{ getCurrentSession() - 1 }} von
+          {{ studyBlockEvent.studyBlock?.plannedSessions }}</mat-card-title
+        >
+      </div>
+
       <mat-card-subtitle
         ><markdown>{{
           studyBlockEvent.description
@@ -15,17 +24,17 @@
     <mat-card-content class="time"> {{ displayTime }} </mat-card-content>
     <mat-card-actions>
       <button mat-raised-button color="primary" (click)="toggleStudyTimer()">
-        {{ isRunning ? "Pause" : "Start" }}
+        {{ isRunning ? "Stop" : "Start" }}
       </button>
       <button mat-raised-button color="warn" (click)="stopStudying()">
-        Exit
+        Schließen
       </button>
       <button
         mat-raised-button
         color="primary"
         (click)="completedStudySession()"
       >
-        Session abgeschlossen.
+        Timer abschließen
       </button>
     </mat-card-actions>
   </mat-card>

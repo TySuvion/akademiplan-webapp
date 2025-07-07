@@ -8,6 +8,7 @@ import { ApiService } from '../services/api.service';
 import { MarkdownModule } from 'ngx-markdown';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ContinueStudyDialogComponent } from './continue-study-dialog/continue-study-dialog.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-studysession',
@@ -17,6 +18,7 @@ import { ContinueStudyDialogComponent } from './continue-study-dialog/continue-s
     MatIconModule,
     MarkdownModule,
     MatDialogModule,
+    CommonModule,
   ],
   templateUrl: './studysession.component.html',
   styleUrl: './studysession.component.css',
