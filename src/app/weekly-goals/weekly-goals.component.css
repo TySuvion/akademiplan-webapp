@@ -1,5 +1,5 @@
 .goalDisplay {
   overflow-wrap: anywhere;
   word-break: keep-all;
-  width: 48ch;
+  padding: 10px;
 }
