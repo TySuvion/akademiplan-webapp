@@ -6,6 +6,9 @@ import {
   signal,
   WritableSignal,
 } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import localeDe from '@angular/common/locales/de';
+import localeDeExtra from '@angular/common/locales/extra/de';
 import { MatDialog } from '@angular/material/dialog';
 import { ApiService } from '../services/api.service';
 import { CalendarEvent } from '../models/event.model';
@@ -20,6 +23,8 @@ import { WeeklyGoalsComponent } from '../weekly-goals/weekly-goals.component';
 import { CoursesComponent } from '../courses/courses.component';
 import { UpdateComponentsServiceService } from '../services/update-components-service.service';
 import { Subscription } from 'rxjs';
+
+registerLocaleData(localeDe, 'de-DE', localeDeExtra);
 
 @Component({
   selector: 'app-calendar',

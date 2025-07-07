@@ -2,7 +2,9 @@
   <mat-card>
     <mat-card-header>
       <mat-card-title>
-        {{ selectedDateSignal() | date : "fullDate" }}</mat-card-title
+        {{
+          selectedDateSignal() | date : "fullDate" : "" : "de-DE"
+        }}</mat-card-title
       >
       <div class="calendar-actions">
         <button mat-raised-button (click)="changeDay(-1)">
